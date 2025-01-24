@@ -1,11 +1,11 @@
-/* General styling */
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     animation: fadeIn 1s ease-in-out;
 }
 
-/* Title Section */
+
 .home-title {
     font-size: 24px;
     font-weight: bold;
@@ -38,14 +38,14 @@ body {
 
 .profile-container {
     display: flex;
-    justify-content: space-between; /* Space between avatar and form */
-    align-items: center; /* Align vertically */
-    margin: 50px 80px; /* Adjust spacing from the edges */
+    justify-content: space-between; 
+    align-items: center; 
+    margin: 50px 80px; 
 }
 
 .profile-header {
     display: flex;
-    flex-direction: column; /* Stack avatar and name vertically */
+    flex-direction: column; 
     align-items: center;
     margin-top: 50px;
 }
@@ -55,12 +55,12 @@ body {
     height: 200px;
     background-color: #d6d6d6;
     border-radius: 50%;
-    margin-bottom: 20px; /* Space between avatar and name */
+    margin-bottom: 20px; 
 }
 
 
 .profile-info {
-    margin-left: 20px; /* Space between avatar and name */
+    margin-left: 20px; 
 }
 
 .profile-name {
@@ -74,7 +74,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
-    width: 500px; /* Adjust form width */
+    width: 500px; 
 }
 
 
@@ -95,9 +95,9 @@ body {
     font-size: 14px;
 }
 
-/* Button Styles */
+
 .button-group {
-    /* grid-column: span 2; */
+   
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
@@ -133,7 +133,7 @@ body {
     background-color: #f4b4a1;
 }
 
-/* Recent Posts Section */
+
 .recent-posts {
     margin-top: 20px;
     margin-left: 350px;
@@ -143,9 +143,9 @@ body {
     font-size: 18px;
 }
 
-/* Navigation Link */
-.navigation-link {
-    margin-top: 10px;
+
+/* .navigation-link {
+    margin-top: 500px;
     margin-left: 600px;
     text-align: left;
 }
@@ -158,9 +158,9 @@ body {
 
 .navigation-link a:hover {
     text-decoration: underline;
-}
+}  */
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
     .profile-form {
         grid-template-columns: 1fr;
@@ -171,7 +171,7 @@ body {
     }
 }
 
-/* Animations */
+
 @keyframes fadeIn {
     from {
         opacity: 0;

@@ -52,10 +52,10 @@ const Profile = () => {
        
       </div>
 
-      {/* Navigation Link */}
-      <div className="navigation-link">
+      
+      {/* <div className="navigation-link">
         <Link to="/">Back to Home</Link>
-      </div>
+      </div> */}
     </div>
   );
 };

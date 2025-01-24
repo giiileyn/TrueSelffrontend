@@ -6,6 +6,7 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 import Home from './page/Home';
 import Profile from './page/Profile'
+import Help from './page/Help';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/help" element={<Help />} />
         </Routes>
       </div>
     </Router>

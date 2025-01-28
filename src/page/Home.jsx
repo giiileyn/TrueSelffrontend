@@ -30,7 +30,7 @@ const Home = () => {
 
         {/* Right Section: Image */}
         <div className="right-row">
-          <img src="/page/home.png" alt="image" />
+          <img className="ml-5" src="/page/removeBgHome.png" alt="image" />
         </div>
       </div>
     </div>

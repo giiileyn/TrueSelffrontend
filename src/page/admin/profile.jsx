@@ -46,21 +46,26 @@ const Profile = () => {
     setIsPasswordModalOpen(false);
   };
 
-  const handleLinkGoogleAccount = (credentialResponse) => {
+  const handleLinkGoogleAccount = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse?.credential);
+    const userId = user._id;
     const clean_data = {
       provider_id: decoded.sub,
-      user_id: user._id,
     };
     console.log(clean_data);
-    client.put("/auth/link-google", clean_data).then((response) => {
-      if (response.status === 200) {
-        notifySuccess("Successfully linked");
-        setUser(response.data);
-      } else {
-        notifyError("Something went wrong");
-      }
-    });
+    await AxiosInstance.put(`/auth/googleLinkAccount/${userId}`, clean_data)
+      .then((response) => {
+        if (response.status === 200) {
+          notifySuccess("Successfully linked");
+          setUser(response.data);
+        } else {
+          notifyError("Something went wrong");
+        }
+      })
+      .catch((error) => {
+        console.error("Error linking google account", error);
+        notifyError("Failed to link Google account.");
+      });
   };
 
   // Handle file input change

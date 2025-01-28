@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
+import ProtectedRoute from "../utils/ProtectedRoute";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import Home from "./page/Home";
@@ -31,7 +32,12 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/help" element={<Help />} />
           <Route path="/myDiary" element={<DiaryEditor />}></Route>
-          <Route path="/admin" element={<AdminLayout />}>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute element={<AdminLayout />} adminOnly={true} />
+            }
+          >
             <Route index element={<AdminIndex />} />
             <Route path="email" element={<AdminEmail />}></Route>
             <Route path="contacts" element={<AdminContact />}></Route>

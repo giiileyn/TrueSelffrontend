@@ -19,31 +19,28 @@ const ChangePasswordModal = ({ onClose }) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const user = getUser();
-    data.user = user;
-    console.log(data);
+    const userId = user._id;
+    const cleanData = {
+      currentPassword: data.current,
+      newPassword: data.newPassword,
+      confirmPassword: data.confirm,
+    };
 
-    AxiosInstance.put(`/auth/changePassword`, data, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        console.log(response);
-        notifySuccess("Password updated successfully!");
-        onClose();
-      })
-      .catch((error) => {
-        if (error.response) {
-          const errorMessage = error.response.data.msg;
-          console.log(errorMessage);
-          notifyError(errorMessage);
-        } else {
-          console.log(error.message);
-          notifyError(error.message);
+    try {
+      await AxiosInstance.put(`/auth/changePassword/${userId}`, cleanData).then(
+        (response) => {
+          if (response.status === 200) {
+            notifySuccess("Password updated successfully!");
+            onClose();
+          }
         }
-      });
+      );
+    } catch (error) {
+      console.log(error);
+      notifyError(error.message);
+    }
   };
 
   return (

@@ -61,6 +61,8 @@ const Profile = ({ onClose, user, isEditing }) => {
   const [isEmailUnique, setIsEmailUnique] = useState(true);
 
   const onSubmit = async (data) => {
+    const userId = user._id;
+
     if (!isEmailUnique) {
       notifyError("Email must be unique");
       return;
@@ -73,29 +75,20 @@ const Profile = ({ onClose, user, isEditing }) => {
       dob: data.dob.toISOString(),
     };
 
-    const url = `/users/update-profile/${user._id}`;
-    const method = "PUT";
-
-    AxiosInstance({
-      method,
-      url,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: updatedUser,
-    })
+    AxiosInstance.put(`/users/admin/${userId}`, updatedUser)
       .then((response) => {
-        console.log(response.data.user);
-        setUser(response.data);
-        notifySuccess("Profile updated successfully");
-        onClose();
+        if (response.status === 200) {
+          notifySuccess("Successfully updated profile");
+          setUser(response.data);
+          onClose();
+        }
       })
       .catch((error) => {
-        notifyError(isEditing ? "Error updating user" : "Error creating user");
         console.error(
-          isEditing ? "Error updating user:" : "Error creating user:",
+          "Error updating user:",
           error.response ? error.response.data : error.message
         );
+        notifyError("Error updating profile");
       });
   };
 

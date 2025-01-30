@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import "./Login.css";
 import AxiosInstance from "../../utils/AxiosInstance";
 import { toast } from "react-toastify";
@@ -8,8 +9,11 @@ import { authenticate } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const {
     control,
     handleSubmit,
@@ -21,6 +25,16 @@ const Login = () => {
       password: "",
     },
   });
+
+  useEffect(() => {
+    if (location.state?.message && location.state?.status === "error") {
+      notifyError(location.state.message);
+      navigate(location.pathname, { replace: true });
+    } else {
+      notifySuccess(location.state?.message);
+      navigate(location.pathname, { replace: true });
+    }
+  }, [location]);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -35,6 +49,8 @@ const Login = () => {
           });
           if (response.data.user.role === "admin") {
             navigate("/admin");
+          } else {
+            navigate("/");
           }
         })
         .catch((error) => {
@@ -47,9 +63,42 @@ const Login = () => {
     }
   };
 
+  const redirectToResetPassword = () => {
+    navigate("/reset-password-request");
+  };
+
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse.credential);
     console.log(decoded);
+    const data = {
+      email: decoded.email,
+      password: decoded.sub,
+    };
+    try {
+      await AxiosInstance.post("/auth/login", data)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            authenticate(response.data, () => {
+              console.log("User authenticated");
+              notifySuccess("Login successful");
+            });
+            if (response.data.user.role === "admin") {
+              navigate("/admin");
+            }
+          } else {
+            notifyError(response.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          notifyError(error.data.message);
+        });
+    } catch (error) {
+      console.log(error);
+      notifyError("Login failed");
+    }
+    // await AxiosInstance.post("/auth/google-login"
   };
 
   return (
@@ -104,7 +153,7 @@ const Login = () => {
               )}
             </div>
             <div className="reset-password">
-              <a href="">Reset password?</a>
+              <a onClick={redirectToResetPassword}>Reset password?</a>
             </div>
             <div className="social-login">
               <a href="" className="social-icon facebook"></a>

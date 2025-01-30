@@ -6,7 +6,6 @@ const Home = () => {
   return (
     <div>
       {/* Curved top section */}
-      <div className="home-title">True Self</div>
 
       <div className="register-container">
         {/* Left Section: Text */}

@@ -5,7 +5,13 @@ const ProtectedRoute = ({ element, adminOnly = false }) => {
   const user = getUser();
 
   if (!user) {
-    return <Navigate to="/login" replace />; // Redirect to login if not authenticated
+    return (
+      <Navigate
+        to="/login"
+        replace
+        state={{ message: "Please login first!", status: "error" }}
+      />
+    ); // Redirect to login if not authenticated
   }
 
   if (adminOnly && user.role !== "admin") {

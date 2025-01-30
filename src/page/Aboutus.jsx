@@ -55,6 +55,7 @@ const Aboutus = () => {
       </div>
     </div>
   );
+  
 };
 
 export default Aboutus;

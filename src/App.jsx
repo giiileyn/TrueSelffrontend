@@ -8,6 +8,7 @@ import Home from './page/Home';
 import Profile from './page/Profile'
 import Help from './page/Help';
 import Aboutus from './page/Aboutus';
+import ComPage from './page/ComPage';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/help" element={<Help />} />
           <Route path="/about" element={<Aboutus />} />
+          <Route path="/community" element={<ComPage />} />
         </Routes>
       </div>
     </Router>

@@ -41,7 +41,7 @@ const Contact = () => {
       <div className="absolute bottom-0 right-1/12 w-72 h-76 bg-indigo-500 rounded-full opacity-40 -z-10"></div>
 
       {/* Form Container */}
-      <div className="max-w-xl w-full p-6 bg-white rounded-lg shadow-lg relative z-10">
+      <div className="max-w-xl mt-16 w-full p-6 bg-white rounded-lg shadow-lg relative z-10">
         <div className="text-center mb-6">
           <h1 className="text-2xl font-semibold text-gray-800">Contact Us</h1>
           <p className="text-gray-600 mt-2 text-sm">

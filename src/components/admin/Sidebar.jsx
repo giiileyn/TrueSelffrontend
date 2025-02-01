@@ -16,7 +16,6 @@ import ArticleIcon from "@mui/icons-material/Article";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../utils/helpers";
 import Swal from "sweetalert2";
-// import { doSignOut } from "../../../firebase/auth";
 
 const Sidebar = ({ isMinimized }) => {
   const navigate = useNavigate();
@@ -39,27 +38,26 @@ const Sidebar = ({ isMinimized }) => {
   };
 
   const handleLogout = () => {
-    // Swal.fire({
-    //   title: "Are you sure?",
-    //   text: "You will be logged out of your account!",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Yes, log me out!",
-    // }).then(async (result) => {
-    //   if (result.isConfirmed) {
-    //     await doSignOut();
-    //     logout(() => {
-    //       navigate("/");
-    //     });
-    //     Swal.fire(
-    //       "Logged Out!",
-    //       "You have been logged out successfully.",
-    //       "success"
-    //     );
-    //   }
-    // });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log me out!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        logout(() => {
+          navigate("/");
+        });
+        Swal.fire(
+          "Logged Out!",
+          "You have been logged out successfully.",
+          "success"
+        );
+      }
+    });
   };
 
   return (
@@ -275,7 +273,7 @@ const Sidebar = ({ isMinimized }) => {
             </span>
           </li>
         </Link>
-        <h1
+        {/* <h1
           style={{ fontSize: "16px" }}
           className={`text-gray-400 font-sans px-8 pt-1 ${
             isMinimized ? "hidden" : "block"
@@ -344,7 +342,7 @@ const Sidebar = ({ isMinimized }) => {
               </li>
             </Link>
           </ul>
-        )}
+        )} */}
 
         <h1
           style={{ fontSize: "16px" }}

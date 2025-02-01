@@ -208,7 +208,7 @@ const Navbar = () => {
                 position: "absolute",
                 top: "100%",
                 right: 0,
-                backgroundColor: "#2E2E2E",
+                backgroundColor: "#fff",
                 borderRadius: "8px",
                 boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
                 zIndex: 10,
@@ -219,15 +219,16 @@ const Navbar = () => {
                 <ListItem button component={NavLink} to="/profile">
                   <ListItemText primary="Profile" sx={{ color: "black" }} />
                 </ListItem>
-                <ListItem button component={NavLink} to="/my-cart">
-                  <ListItemText primary="Cart" sx={{ color: "black" }} />
+                <ListItem button component={NavLink} to="/community">
+                  <ListItemText primary="Community" sx={{ color: "black" }} />
                 </ListItem>
-                <ListItem button component={NavLink} to="/my-orders">
-                  <ListItemText primary="Order" sx={{ color: "black" }} />
+                <ListItem button component={NavLink} to="/mood">
+                  <ListItemText
+                    primary="Mood Tracker"
+                    sx={{ color: "black" }}
+                  />
                 </ListItem>
-                <ListItem button component={NavLink} to="/my-bookings">
-                  <ListItemText primary="Booking" sx={{ color: "black" }} />
-                </ListItem>
+
                 <ListItem button onClick={handleLogout}>
                   <ListItemText primary="Logout" sx={{ color: "black" }} />
                 </ListItem>

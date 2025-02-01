@@ -10,11 +10,12 @@ import {
   genderIdentityOptions,
   pronounsOptions,
 } from "../../utils/helpers";
-import DatePicker from "react-date-picker";
-// import "react-date-picker/dist/DatePicker.css";
-// import "react-calendar/dist/Calendar.css";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import Select from "react-select";
+import { WidthFull } from "@mui/icons-material";
 
 const Register = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -110,17 +111,26 @@ const Register = () => {
                     control={control}
                     rules={{ required: "Date of birth is required" }}
                     render={({ field }) => (
-                      <div className="w-full max-w-[350px]">
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                          isOpen={false}
                           {...field}
-                          id="dob"
-                          onChange={field.onChange}
-                          value={field.value}
-                          format="yyyy-MM-dd"
-                          className="w-full px-4 py-2 border border-[#ccc] rounded-4xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          label="Date of Birth"
+                          sx={{ width: "100%" }}
+                          renderInput={(params) => (
+                            <input
+                              {...params.inputProps} // Get the inputProps from the DatePicker
+                              style={{
+                                width: "100%",
+                                padding: "8px 12px",
+                                borderRadius: "50px", // Apply border radius to the input
+                                border: "1px solid #ccc", // Border color
+                                outline: "none", // Remove default outline
+                              }}
+                              aria-label="Date of Birth"
+                            />
+                          )}
                         />
-                      </div>
+                      </LocalizationProvider>
                     )}
                   />
 
@@ -307,7 +317,11 @@ const Register = () => {
             )}
             <div className="navigation-buttons">
               {currentStep > 1 && (
-                <button type="button" onClick={prevStep}>
+                <button
+                  type="button"
+                  onClick={nextStep}
+                  className="px-6 py-2 mt-2 mr-3 border-2 border-[#B0E0E6] bg-[#B0E0E6] text-white font-semibold rounded-lg shadow-md hover:bg-[#B0E0E6] hover:text-white focus:outline-none transition duration-300 ease-in-out"
+                >
                   Previous
                 </button>
               )}
@@ -320,7 +334,12 @@ const Register = () => {
                   Next
                 </button>
               ) : (
-                <button type="submit">Submit</button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 mt-2  border-2 border-[#B0E0E6] text-[#B0E0E6] font-semibold rounded-lg shadow-md hover:bg-[#B0E0E6] hover:text-white focus:outline-none transition duration-300 ease-in-out"
+                >
+                  Submit
+                </button>
               )}
             </div>
           </form>

@@ -1,8 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import "./Profile.css";
+import { getUser } from "../../utils/helpers";
+import ChangePasswordModal from "../components/user/modals/ChangePassword";
 
 const Profile = () => {
+  const user = getUser();
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+
+  const handleOpenPasswordModal = () => {
+    setIsPasswordModalOpen(true);
+  };
+
+  const handleClosePasswordModal = () => {
+    setIsPasswordModalOpen(false);
+  };
+
   return (
     <div>
       {/* Title Section */}
@@ -14,7 +26,7 @@ const Profile = () => {
         {/* Profile Header */}
         <div className="profile-header">
           <div className="profile-avatar"></div>
-          <h2 className="profile-name">Maria Dela Cruz</h2>
+          <h2 className="profile-name">{user.name}</h2>
         </div>
 
         {/* Profile Form */}
@@ -39,23 +51,31 @@ const Profile = () => {
             <button type="button" className="edit-button">
               Edit
             </button>
-            <button type="button" className="change-password-button">
+            <button
+              type="button"
+              className="change-password-button"
+              onClick={handleOpenPasswordModal}
+            >
               Change Password
             </button>
           </div>
         </form>
       </div>
 
-      
       <div className="recent-posts">
         <h3>Recent Post</h3>
-       
       </div>
 
-      
       {/* <div className="navigation-link">
         <Link to="/">Back to Home</Link>
       </div> */}
+
+      {isPasswordModalOpen && (
+        <ChangePasswordModal
+          isOpen={isPasswordModalOpen}
+          onClose={handleClosePasswordModal}
+        />
+      )}
     </div>
   );
 };

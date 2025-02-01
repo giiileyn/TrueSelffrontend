@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   PieChart,
   Pie,
@@ -19,6 +19,10 @@ import {
   PolarRadiusAxis,
   ResponsiveContainer,
 } from "recharts";
+import AxiosInstance from "../../utils/AxiosInstance";
+import { notifyError } from "../../utils/helpers";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 // Mock Data
 const pieData = [
@@ -57,31 +61,52 @@ const radarData = [
 const COLORS = ["#FFDF20", "#8EC5FF", "#FFA2A2", "#7BF1A8"];
 
 const MoodDashboard = () => {
-  return (
-    <div>
-      <h2>Mood Tracking Dashboard</h2>
+  const [moodPerMonth, setMoodPerMonth] = useState([]);
 
+  const fetchMoodPerMonth = async () => {
+    await AxiosInstance.get("/moodEntries")
+      .then((res) => {
+        setMoodPerMonth(res.data.moodPerMonth);
+      })
+      .catch((err) => {
+        console.log(err);
+        notifyError("Failed to fetch mood data");
+      });
+  };
+
+  return (
+    <div className="my-20 px-16">
+      <div className="flex justify-center items-center">
+        <h1 className="font-semibold font-serif text-2xl">
+          Mood Tracker Dashboard
+        </h1>
+      </div>
+
+      <div className="flex justify-between items-center mt-10">
+        <div>
+          <ResponsiveContainer width="100%" height={400}>
+            <PieChart>
+              <Pie
+                data={pieData}
+                cx={120}
+                cy={200}
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {pieData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
       {/* Pie Chart */}
-      <ResponsiveContainer width="100%" height={400}>
-        <PieChart>
-          <Pie
-            data={pieData}
-            cx={120}
-            cy={200}
-            innerRadius={60}
-            outerRadius={80}
-            paddingAngle={5}
-            dataKey="value"
-          >
-            {pieData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
 
       {/* Area Chart */}
       <ResponsiveContainer width="100%" height={400}>

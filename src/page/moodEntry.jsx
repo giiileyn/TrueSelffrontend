@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import AxiosInstance from "../../utils/AxiosInstance";
+import { getUser, notifyError, notifySuccess } from "../../utils/helpers";
 
 const moodData = [
   {
@@ -81,8 +82,10 @@ const MoodEntry = () => {
   const [note, setNote] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [suggestion, setSuggestion] = useState("");
+  const user = getUser();
 
   const handleMoodSelection = (mood) => {
+    const userId = user._id;
     setSelectedMood(mood);
 
     Swal.fire({
@@ -112,36 +115,42 @@ const MoodEntry = () => {
         textarea:
           "w-full p-4 rounded-xl shadow-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400",
       },
-    }).then((result) => {
-      console.log(result);
-
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setIsSubmitted(true); // Set to true after submission
-        setNote(result.value); // Save note
-        const randomSuggestion =
-          mood.suggestions[Math.floor(Math.random() * mood.suggestions.length)];
-        setSuggestion(randomSuggestion); // Set random suggestion
-        Swal.fire({
-          title: "Success!",
-          text: "Your mood and note have been submitted successfully.",
-          icon: "success",
-          confirmButtonText: "OK",
-          customClass: {
-            popup: "bg-[#E0FFEB] p-6 rounded-xl",
-            title: "text-2xl font-semibold text-[#28a745]",
-            htmlContainer: "text-lg text-gray-700",
-          },
-        });
-
         const data = {
           mood: mood.name,
           note: result.value,
         };
 
-        AxiosInstance.post("/mood", data)
-          .then((res) => {})
-          .catch((err) => {});
-        console.log(data);
+        // Save mood data to the database
+        await AxiosInstance.post(`/moodEntries/${userId}`, data)
+          .then((res) => {
+            if (res.status === 201) {
+              console.log("Mood data saved successfully");
+              setIsSubmitted(true); // Set to true after submission
+              setNote(result.value); // Save note
+              const randomSuggestion =
+                mood.suggestions[
+                  Math.floor(Math.random() * mood.suggestions.length)
+                ];
+              setSuggestion(randomSuggestion); // Set random suggestion
+              Swal.fire({
+                title: "Success!",
+                text: "Your mood and note have been submitted successfully.",
+                icon: "success",
+                confirmButtonText: "OK",
+                customClass: {
+                  popup: "bg-[#E0FFEB] p-6 rounded-xl",
+                  title: "text-2xl font-semibold text-[#28a745]",
+                  htmlContainer: "text-lg text-gray-700",
+                },
+              });
+            }
+          })
+          .catch((err) => {
+            console.error("Error saving mood data", err);
+            notifyError("Error saving mood data");
+          });
       }
     });
   };

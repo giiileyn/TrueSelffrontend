@@ -13,6 +13,7 @@ import MoodIndex from "./page/moodIndex";
 import Sphere from "./components/user/sphere";
 import MoodEntry from "./page/moodEntry";
 import MoodDashboard from "./page/moodDashboard";
+import SuccessVerified from "./page/SucessVerified";
 
 import Siri from "./page/siri";
 import DiaryEditor from "./page/Diary";
@@ -40,7 +41,11 @@ const App = () => {
           <Route path="/community" element={<ComPage />} />
           <Route path="/mood" element={<MoodIndex />} />
           <Route path="mood-dashboard" element={<MoodDashboard />} />
+          <Route path="/profile" element={<Profile />} />
+
+          <Route path="/myDiary" element={<DiaryEditor />} />
         </Route>
+        <Route path="/success-verified/:token" element={<SuccessVerified />} />
         <Route path="/record-mood" element={<MoodEntry />} />
         <Route path="/sphere" element={<Sphere />} />
         <Route path="/siri" element={<Siri />} />
@@ -51,9 +56,8 @@ const App = () => {
         />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
+
         <Route path="/help" element={<Help />} />
-        <Route path="/myDiary" element={<DiaryEditor />} />
 
         {/* Routes for admin */}
         <Route

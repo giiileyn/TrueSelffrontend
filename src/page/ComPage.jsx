@@ -14,7 +14,6 @@ const ComPage = () => {
             {/* Topics */}
             <h3 style={{ fontSize: "14px", marginBottom: "10px" }}>Topics</h3>
 
-
         <nav className="sidebar-nav">
           <ul>
             <li>

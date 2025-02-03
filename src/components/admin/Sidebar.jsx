@@ -1,22 +1,12 @@
 import React, { useState } from "react";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import GroupIcon from "@mui/icons-material/Group";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import FastfoodIcon from "@mui/icons-material/Fastfood";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import TheatersIcon from "@mui/icons-material/Theaters";
 import PersonIcon from "@mui/icons-material/Person";
 import LogoutIcon from "@mui/icons-material/Logout";
-// import EmailIcon from "@mui/icons-material/Email";
-// import MessageIcon from "@mui/icons-material/Message";
-import LocalDiningIcon from "@mui/icons-material/LocalDining";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import ArticleIcon from "@mui/icons-material/Article";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../utils/helpers";
 import Swal from "sweetalert2";
-// import { doSignOut } from "../../../firebase/auth";
 
 const Sidebar = ({ isMinimized }) => {
   const navigate = useNavigate();
@@ -39,27 +29,26 @@ const Sidebar = ({ isMinimized }) => {
   };
 
   const handleLogout = () => {
-    // Swal.fire({
-    //   title: "Are you sure?",
-    //   text: "You will be logged out of your account!",
-    //   icon: "warning",
-    //   showCancelButton: true,
-    //   confirmButtonColor: "#3085d6",
-    //   cancelButtonColor: "#d33",
-    //   confirmButtonText: "Yes, log me out!",
-    // }).then(async (result) => {
-    //   if (result.isConfirmed) {
-    //     await doSignOut();
-    //     logout(() => {
-    //       navigate("/");
-    //     });
-    //     Swal.fire(
-    //       "Logged Out!",
-    //       "You have been logged out successfully.",
-    //       "success"
-    //     );
-    //   }
-    // });
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You will be logged out of your account!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log me out!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        logout(() => {
+          navigate("/");
+        });
+        Swal.fire(
+          "Logged Out!",
+          "You have been logged out successfully.",
+          "success"
+        );
+      }
+    });
   };
 
   return (
@@ -153,7 +142,7 @@ const Sidebar = ({ isMinimized }) => {
             }}
           >
             {selected === "users" && (
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-green-500" />
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-[#D1B1D3]" />
             )}
             <div
               className="mr-5 rounded-md transition-colors duration-300 ease-in-out"
@@ -244,7 +233,7 @@ const Sidebar = ({ isMinimized }) => {
             }}
           >
             {selected === "contacts" && (
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-green-500" />
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-[#D1B1D3]" />
             )}
             <div
               className="mr-5 rounded-md transition-colors duration-300 ease-in-out"
@@ -275,7 +264,7 @@ const Sidebar = ({ isMinimized }) => {
             </span>
           </li>
         </Link>
-        <h1
+        {/* <h1
           style={{ fontSize: "16px" }}
           className={`text-gray-400 font-sans px-8 pt-1 ${
             isMinimized ? "hidden" : "block"
@@ -344,7 +333,7 @@ const Sidebar = ({ isMinimized }) => {
               </li>
             </Link>
           </ul>
-        )}
+        )} */}
 
         <h1
           style={{ fontSize: "16px" }}
@@ -369,7 +358,7 @@ const Sidebar = ({ isMinimized }) => {
             }}
           >
             {selected === "profile" && (
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-green-500" />
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-[#D1B1D3]" />
             )}
             <div
               className="mr-5 rounded-md transition-colors duration-300 ease-in-out"
@@ -415,7 +404,7 @@ const Sidebar = ({ isMinimized }) => {
           }}
         >
           {selected === "logout" && (
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-green-500" />
+            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-[#D1B1D3]" />
           )}
           <div
             className="mr-5 rounded-md transition-colors duration-300 ease-in-out"

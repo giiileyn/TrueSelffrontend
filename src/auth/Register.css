@@ -7,8 +7,29 @@ body {
   overflow-x: hidden;
 }
 
+/* Custom DatePicker Styles */
+.custom-date-picker {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.custom-date-picker:focus {
+  border-color: #4a90e2; /* Change this to your preferred focus color */
+  box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
+  outline: none; /* Remove the default outline */
+}
+
+/* Remove arrow buttons if not needed */
+.react-date-picker__button {
+  display: none;
+}
+
 /* Curved top section */
-.register-curved-top  {
+.register-curved-top {
   position: absolute; /* Ensures the curved section is positioned at the top */
   top: 0;
   left: 0;
@@ -17,7 +38,7 @@ body {
   background: #d1b1d3;
   border-bottom-left-radius: 100%;
   border-bottom-right-radius: 100%;
-  z-index: -1; 
+  z-index: -1;
   animation: slideIn 1.5s ease-out;
 }
 
@@ -101,11 +122,10 @@ label {
   font-size: 0.9rem;
   color: #333;
   font-weight: bold;
-  display: block; 
-  text-align: left; 
-  margin-top: 5px; 
+  display: block;
+  text-align: left;
+  margin-top: 5px;
 }
-
 
 input {
   width: 100%;
@@ -136,7 +156,6 @@ input:focus {
 .register-submit-btn:hover {
   background-color: #b38bb0;
 }
-
 
 .register-login-link {
   margin-top: 20px;

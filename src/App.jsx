@@ -40,7 +40,7 @@ const App = () => {
           <Route path="/about" element={<Aboutus />} />
           <Route path="/community" element={<ComPage />} />
           <Route path="/mood" element={<MoodIndex />} />
-          <Route path="mood-dashboard" element={<MoodDashboard />} />
+          <Route path="/mood-dashboard" element={<MoodDashboard />} />
           <Route path="/profile" element={<Profile />} />
 
           <Route path="/myDiary" element={<DiaryEditor />} />

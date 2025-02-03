@@ -9,7 +9,7 @@ const Desk1 = () => {
       <div className="desk-purple-circle right"></div>
       <h2 className="desk1-heading">Recommended Hospitals</h2>
       <div className="desk1-content">
-        {/* Doctor Illustration with Image */}
+      
         <div className="desk-doctor-illustration">
           <img
             src="/page/Lifesavers - Bust 1.png"

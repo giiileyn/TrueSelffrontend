@@ -128,7 +128,7 @@ const ComPage = () => {
         </div>
       </main>
 
-      {/* Right Sidebar */}
+     
       <aside className="right-sidebar">
         <h3>Popular Communities</h3>
         <ul>

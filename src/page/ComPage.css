@@ -21,7 +21,7 @@
   }
 
   
-  /* Sidebar */
+   
   .sidebar {
     width: 350px;
     background-color: #c8a2c8;
@@ -103,9 +103,9 @@
 
   
   
-  /* Main Content */
+  
   .main-content {
-    width: 100%; /* Take full width */
+    width: 100%; 
     padding: 20px;
     background-color: #f9f9f9;
   }
@@ -178,9 +178,9 @@
     border-radius: 10px;
   }
   
-  /* Right Sidebar */
+  
   .right-sidebar {
-    /* width: 100%; */
+    
     background: white;
     padding: 10px;
    

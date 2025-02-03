@@ -9,6 +9,7 @@ import Profile from './page/Profile'
 import Help from './page/Help';
 import Aboutus from './page/Aboutus';
 import ComPage from './page/ComPage';
+import Desk1 from './page/Desk1';
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/help" element={<Help />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/community" element={<ComPage />} />
+          <Route path="/desk1" element={<Desk1 />} />
         </Routes>
       </div>
     </Router>

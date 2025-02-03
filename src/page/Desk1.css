@@ -1,0 +1,179 @@
+.desk1 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.desk1 body, .desk1 html {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  font-family: Arial, sans-serif;
+}
+
+
+.desk1-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 100vh;
+  padding: 40px 0;
+  position: relative;
+}
+
+
+.desk-purple-circle {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background-color: #c8a2c8;
+  border-radius: 50%;
+  z-index: -1;
+}
+
+.desk-purple-circle.left {
+  top: -100px;
+  left: -150px;
+}
+
+.desk-purple-circle.right {
+  bottom: -100px;
+  right: -150px;
+}
+
+
+.desk1-heading {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: left;
+  width: 80%;
+  max-width: 1200px;
+}
+
+
+.desk1-content {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  max-width: 1200px;
+  width: 90%;
+}
+
+
+.desk-doctor-illustration {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.desk-doctor {
+  width: 150px;
+  height: 150px;
+  background-color: #f4a261;
+  border-radius: 50%;
+}
+
+
+.desk-hospital-list {
+  flex: 2;
+}
+
+.desk-hospital-list ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.desk-hospital-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #ddd;
+  padding: 20px 0;
+}
+
+.desk-hospital-info h3 {
+  font-size: 22px;
+  margin: 0;
+}
+
+.desk-hospital-info p {
+  font-size: 18px;
+  color: gray;
+  margin: 4px 0 0;
+}
+
+.desk-circle {
+  width: 30px;
+  height: 30px;
+  background-color: #ddd;
+  border-radius: 50%;
+}
+
+
+.desk-see-more {
+  display: inline-block;
+  font-weight: bold;
+  margin-top: 20px;
+  text-decoration: none;
+  font-size: 18px;
+  color: black;
+}
+
+
+@media (max-width: 1024px) {
+  .desk1-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .desk1-heading {
+    text-align: center;
+  }
+
+  .desk-purple-circle.left {
+    top: -80px;
+    left: -120px;
+    width: 200px;
+    height: 200px;
+  }
+
+  .desk-purple-circle.right {
+    bottom: -80px;
+    right: -120px;
+    width: 200px;
+    height: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .desk-purple-circle.left,
+  .desk-purple-circle.right {
+    display: none; 
+  }
+
+  .desk1-container {
+    padding: 20px;
+  }
+
+  .desk1-heading {
+    font-size: 28px;
+  }
+
+  .desk-doctor {
+    width: 120px;
+    height: 120px;
+  }
+
+  .desk-hospital-list li {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .desk-circle {
+    margin-top: 10px;
+  }
+}

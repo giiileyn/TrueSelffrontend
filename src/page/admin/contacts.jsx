@@ -10,10 +10,12 @@ import {
   Button,
   CircularProgress,
   Box,
+  Pagination,
 } from "@mui/material";
-import { notifyError, notifySuccess } from "../../../utils/helpers";
+import { notifyError } from "../../../utils/helpers";
 import AxiosInstance from "../../../utils/AxiosInstance";
 import ContactModal from "../../components/admin/modals/Contact.modal";
+import { Link } from "react-router-dom";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -21,6 +23,10 @@ const Contacts = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [contactToEdit, setContactToEdit] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Pagination state
+  const [page, setPage] = useState(1);
+  const rowsPerPage = 10; // Set number of rows per page
 
   const fetchContacts = async () => {
     setIsLoading(true);
@@ -53,6 +59,17 @@ const Contacts = () => {
     setContactToEdit(null);
   };
 
+  // Handle pagination change
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  // Get current page's data
+  const paginatedContacts = contacts.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
+
   return (
     <div className="px-3 mt-8">
       <div className="flex justify-between">
@@ -60,7 +77,9 @@ const Contacts = () => {
           List of Contacts
         </h1>
         <p style={{ fontSize: "13.5px" }}>
-          <span className="text-blue-500 hover:underline">Home</span> /
+          <Link to="/admin">
+            <span className="text-blue-500 hover:underline">Home</span> /
+          </Link>
           <span className="text-gray-500"> Contacts</span>
         </p>
       </div>
@@ -82,71 +101,85 @@ const Contacts = () => {
             <CircularProgress />
           </div>
         ) : (
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell></TableCell>
-                  <TableCell>
-                    <strong>Name</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Email</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Phone</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Subject</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Message</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Status</strong>
-                  </TableCell>
-                  <TableCell>
-                    <strong>Actions</strong>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {contacts.length > 0 ? (
-                  contacts.map((contact, index) => (
-                    <TableRow key={contact._id}>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>{contact.name}</TableCell>
-                      <TableCell>{contact.email}</TableCell>
-                      <TableCell>{contact.phone}</TableCell>
-                      <TableCell>{contact.subject}</TableCell>
-                      <TableCell>{contact.message}</TableCell>
-                      <TableCell>
-                        {contact.status.charAt(0).toUpperCase() +
-                          contact.status.slice(1)}
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="contained"
-                          color="secondary"
-                          size="small"
-                          onClick={() => openEditModal(contact)}
-                          style={{ marginLeft: "5px" }}
-                        >
-                          Edit
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
+          <>
+            <TableContainer component={Paper}>
+              <Table>
+                <TableHead>
                   <TableRow>
-                    <TableCell colSpan={8} align="center">
-                      No contacts found.
+                    <TableCell></TableCell>
+                    <TableCell>
+                      <strong>Name</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Email</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Phone</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Subject</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Message</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Status</strong>
+                    </TableCell>
+                    <TableCell>
+                      <strong>Actions</strong>
                     </TableCell>
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {paginatedContacts.length > 0 ? (
+                    paginatedContacts.map((contact, index) => (
+                      <TableRow key={contact._id}>
+                        <TableCell>
+                          {(page - 1) * rowsPerPage + index + 1}
+                        </TableCell>
+                        <TableCell>{contact.name}</TableCell>
+                        <TableCell>{contact.email}</TableCell>
+                        <TableCell>{contact.phone}</TableCell>
+                        <TableCell>{contact.subject}</TableCell>
+                        <TableCell>{contact.message}</TableCell>
+                        <TableCell>
+                          {contact.status.charAt(0).toUpperCase() +
+                            contact.status.slice(1)}
+                        </TableCell>
+                        <TableCell>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            onClick={() => openEditModal(contact)}
+                            style={{ marginLeft: "5px" }}
+                          >
+                            Edit
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell colSpan={8} align="center">
+                        No contacts found.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+
+            {/* Pagination Component */}
+            <div className="flex justify-center mt-4">
+              <Pagination
+                count={Math.ceil(contacts.length / rowsPerPage)}
+                page={page}
+                onChange={handleChangePage}
+                color="secondary"
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

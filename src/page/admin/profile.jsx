@@ -70,37 +70,28 @@ const Profile = () => {
 
   // Handle file input change
   const handleFileChange = (event) => {
-    const file = event.target.files[0]; // Get the selected file
+    const file = event.target.files[0];
     if (file) {
       // Check if the file is an image
       if (!file.type.startsWith("image/")) {
-        notifyError("Please select a valid image file."); // Show error if not an image
-        return; // Exit the function if the file is not an image
+        notifyError("Please select a valid image file.");
+        return;
       }
 
       const userId = user._id;
       const formData = new FormData();
-      formData.append("file", file); // Add the file to FormData
-
-      client
-        .put(`/users/update-profile-picture/${userId}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data", // Specify the content type for file upload
-          },
-        })
-        .then((response) => {
-          setUser(response.data);
-          window.location.reload();
-          notifySuccess("Profile picture updated");
-          console.log("Profile picture updated", response);
-        })
-        .catch((error) => {
-          // Handle error
-          console.error("Error updating profile picture", error);
-          notifyError("Failed to update profile picture.");
-        });
-      setSelectedFile(file); // Update state with the selected file
-      console.log(file); // Log the file object
+      formData.append("profilePicture", file);
+      AxiosInstance.put(`/users/update-profile-picture/${userId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }).then((res) => {
+        setUser(res.data);
+        notifySuccess("Profile picture updated");
+        window.location.reload();
+        console.log("Profile picture updated");
+      });
+      setSelectedFile(file);
     }
   };
 

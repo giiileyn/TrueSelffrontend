@@ -7,9 +7,23 @@ import { getUser, notifyError, notifySuccess } from "../../utils/helpers";
 const moodData = [
   {
     id: 1,
+    name: "Neutral",
+    color: "bg-gray-400",
+    icon: "/moods/neutral.png",
+    suggestions: [
+      "Enjoy the present moment and take a deep breath.",
+      "Take some time to relax, maybe listen to calming music.",
+      "Engage in a simple, calming activity like stretching or journaling.",
+      "Reflect on things you're grateful for or things you've accomplished.",
+      "Embrace the peace, focus on being in the here and now.",
+      "Spend some time outdoors to recharge your energy.",
+    ],
+  },
+  {
+    id: 2,
     name: "Happy",
-    color: "bg-yellow-300",
-    icon: "😊",
+    color: "bg-yellow-400",
+    icon: "/moods/smiley.png",
     suggestions: [
       "Keep spreading positivity!",
       "Celebrate small wins.",
@@ -20,38 +34,10 @@ const moodData = [
     ],
   },
   {
-    id: 2,
-    name: "Sad",
-    color: "bg-blue-300",
-    icon: "😞",
-    suggestions: [
-      "Take some time for self-care.",
-      "Talk to someone you trust about your feelings.",
-      "Journaling can help process your emotions.",
-      "Do something that relaxes you, like reading or walking.",
-      "Consider watching something that makes you laugh.",
-      "Practice mindfulness or meditation to find peace.",
-    ],
-  },
-  {
     id: 3,
-    name: "Anger",
-    color: "bg-red-300",
-    icon: "😡",
-    suggestions: [
-      "Try some deep breathing exercises.",
-      "Take a walk to cool off and reset.",
-      "Reflect on what triggered your anger and how to address it.",
-      "Practice mindfulness or meditation to calm your mind.",
-      "Write down your feelings as a form of release.",
-      "Engage in a physical activity to release tension.",
-    ],
-  },
-  {
-    id: 4,
-    name: "Excited",
-    color: "bg-green-300",
-    icon: "😃",
+    name: "Anxious",
+    color: "bg-teal-400",
+    icon: "/moods/anxious.png",
     suggestions: [
       "Channel your energy into something creative!",
       "Celebrate your excitement with others!",
@@ -62,17 +48,31 @@ const moodData = [
     ],
   },
   {
-    id: 5,
-    name: "Calm",
-    color: "bg-indigo-300",
-    icon: "😌",
+    id: 4,
+    name: "Sad",
+    color: "bg-blue-400",
+    icon: "/moods/sad.png",
     suggestions: [
-      "Enjoy the peace and reflect on your day.",
-      "Take time to recharge and relax.",
-      "Use this time to engage in a calming activity, like yoga or reading.",
-      "Enjoy the moment and focus on your breathing.",
-      "Reflect on things you’re grateful for.",
-      "Consider taking a nap to refresh your mind.",
+      "Take some time for self-care.",
+      "Talk to someone you trust about your feelings.",
+      "Journaling can help process your emotions.",
+      "Do something that relaxes you, like reading or walking.",
+      "Consider watching something that makes you laugh.",
+      "Practice mindfulness or meditation to find peace.",
+    ],
+  },
+  {
+    id: 5,
+    name: "Angry",
+    color: "bg-red-400",
+    icon: "/moods/angry.png",
+    suggestions: [
+      "Try some deep breathing exercises.",
+      "Take a walk to cool off and reset.",
+      "Reflect on what triggered your anger and how to address it.",
+      "Practice mindfulness or meditation to calm your mind.",
+      "Write down your feelings as a form of release.",
+      "Engage in a physical activity to release tension.",
     ],
   },
 ];
@@ -104,9 +104,9 @@ const MoodEntry = () => {
         const noteValue = document.getElementById("note").value;
         if (!noteValue) {
           Swal.showValidationMessage("Please add a note.");
-          return false; // Prevent submission if note is empty
+          return false;
         }
-        return noteValue; // Return the note for further processing
+        return noteValue;
       },
       customClass: {
         popup: "bg-[#f7f7f7] p-6 rounded-xl",
@@ -127,13 +127,13 @@ const MoodEntry = () => {
           .then((res) => {
             if (res.status === 201) {
               console.log("Mood data saved successfully");
-              setIsSubmitted(true); // Set to true after submission
-              setNote(result.value); // Save note
+              setIsSubmitted(true);
+              setNote(result.value);
               const randomSuggestion =
                 mood.suggestions[
                   Math.floor(Math.random() * mood.suggestions.length)
                 ];
-              setSuggestion(randomSuggestion); // Set random suggestion
+              setSuggestion(randomSuggestion);
               Swal.fire({
                 title: "Success!",
                 text: "Your mood and note have been submitted successfully.",
@@ -157,7 +157,6 @@ const MoodEntry = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-[#FFDAB9] via-[#FFFACD] to-[#B0E0E6] px-8 py-12">
-      {/* Only show the suggestion after submission */}
       {isSubmitted ? (
         <div className="flex flex-col items-center justify-center w-full max-w-md p-6 rounded-xl bg-white shadow-lg">
           <div className="text-4xl mb-4 text-gray-800">
@@ -181,7 +180,7 @@ const MoodEntry = () => {
       ) : (
         <div className="text-center mb-10">
           <h1 className="text-4xl font-serif font-bold text-[#C8A2C8]">
-            Select Your Mood
+            Hi {user.name}! How are you feeling today?
           </h1>
           <p className="text-lg text-gray-700 mt-4 leading-relaxed">
             Choose a mood that best represents how you're feeling today.
@@ -193,7 +192,13 @@ const MoodEntry = () => {
                 className={`flex flex-col items-center justify-center p-6 rounded-xl shadow-lg cursor-pointer ${mood.color} hover:scale-105 transition-all duration-200`}
                 onClick={() => handleMoodSelection(mood)}
               >
-                <div className="text-5xl">{mood.icon}</div>
+                <div className="text-5xl">
+                  <img
+                    src={mood.icon}
+                    className="object-cover w-16 h-16"
+                    alt={mood.name}
+                  />
+                </div>
                 <h3 className="mt-2 text-xl font-semibold text-gray-800">
                   {mood.name}
                 </h3>

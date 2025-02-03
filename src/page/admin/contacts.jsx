@@ -9,6 +9,7 @@ import {
   Paper,
   Button,
   CircularProgress,
+  Box,
 } from "@mui/material";
 import { notifyError, notifySuccess } from "../../../utils/helpers";
 import AxiosInstance from "../../../utils/AxiosInstance";
@@ -19,15 +20,15 @@ const Contacts = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [contactToEdit, setContactToEdit] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const fetchContacts = async () => {
     setIsLoading(true);
     try {
-      const response = await AxiosInstance.get("/contacts").then((response) => {
-        if (response.status === 200) {
-          setContacts(response.data.data);
-        }
-      });
+      const response = await AxiosInstance.get("/contacts");
+      if (response.status === 200) {
+        setContacts(response.data.data);
+      }
     } catch (error) {
       notifyError("Failed to fetch contacts");
       console.error(error);
@@ -40,6 +41,18 @@ const Contacts = () => {
     fetchContacts();
   }, []);
 
+  const openEditModal = (contact) => {
+    setContactToEdit(contact);
+    setIsEditing(true);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setIsEditing(false);
+    setContactToEdit(null);
+  };
+
   return (
     <div className="px-3 mt-8">
       <div className="flex justify-between">
@@ -51,6 +64,17 @@ const Contacts = () => {
           <span className="text-gray-500"> Contacts</span>
         </p>
       </div>
+
+      {isModalOpen && (
+        <Box position="fixed" top="0" left="0" right="0" bottom="0" zIndex="50">
+          <ContactModal
+            contactToEdit={contactToEdit}
+            isEditing={isEditing}
+            onClose={closeModal}
+            onContactCreated={fetchContacts}
+          />
+        </Box>
+      )}
 
       <div className="mt-6">
         {isLoading ? (
@@ -96,15 +120,19 @@ const Contacts = () => {
                       <TableCell>{contact.phone}</TableCell>
                       <TableCell>{contact.subject}</TableCell>
                       <TableCell>{contact.message}</TableCell>
-                      <TableCell>{contact.status}</TableCell>
+                      <TableCell>
+                        {contact.status.charAt(0).toUpperCase() +
+                          contact.status.slice(1)}
+                      </TableCell>
                       <TableCell>
                         <Button
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           size="small"
-                          onClick={() => console.log(`View ${contact.name}`)}
+                          onClick={() => openEditModal(contact)}
+                          style={{ marginLeft: "5px" }}
                         >
-                          View
+                          Edit
                         </Button>
                       </TableCell>
                     </TableRow>

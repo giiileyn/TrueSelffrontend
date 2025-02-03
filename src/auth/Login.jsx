@@ -109,7 +109,11 @@ const Login = () => {
   return (
     <div>
       <div className="login-container">
-        <h1 className="login-title">True Self</h1>
+        <div className="flex justify-center items-center gap-5 my-10">
+          <img src="/logo/trueself5.png" width={110} height={110} alt="" />
+          <h1 className="login-title">True Self</h1>
+        </div>
+
         <div className="login-card">
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className="login-form-group">

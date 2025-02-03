@@ -36,9 +36,9 @@ const Contact = () => {
   return (
     <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Decorative Shapes */}
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-72 h-72 bg-pink-500 rounded-full opacity-50 -z-10"></div>
-      <div className="absolute top-1/4 left-1/12 w-96 h-96 bg-yellow-500 rounded-full opacity-30 -z-10"></div>
-      <div className="absolute bottom-0 right-1/12 w-72 h-76 bg-indigo-500 rounded-full opacity-40 -z-10"></div>
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-72 h-72 bg-pink-500 rounded-full opacity-50 z-10"></div>
+      <div className="absolute top-1/4 left-1/12 w-96 h-96 bg-yellow-500 rounded-full opacity-30 z-10"></div>
+      <div className="absolute bottom-0 right-1/12 w-72 h-76 bg-indigo-500 rounded-full opacity-40 z-10"></div>
 
       {/* Form Container */}
       <div className="max-w-xl mt-16 w-full p-6 bg-white rounded-lg shadow-lg relative z-10">

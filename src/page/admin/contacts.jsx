@@ -14,6 +14,7 @@ import {
 import { notifyError, notifySuccess } from "../../../utils/helpers";
 import AxiosInstance from "../../../utils/AxiosInstance";
 import ContactModal from "../../components/admin/modals/Contact.modal";
+import { Link } from "react-router-dom";
 
 const Contacts = () => {
   const [contacts, setContacts] = useState([]);
@@ -60,7 +61,9 @@ const Contacts = () => {
           List of Contacts
         </h1>
         <p style={{ fontSize: "13.5px" }}>
-          <span className="text-blue-500 hover:underline">Home</span> /
+          <Link to="/admin">
+            <span className="text-blue-500 hover:underline">Home</span> /
+          </Link>
           <span className="text-gray-500"> Contacts</span>
         </p>
       </div>

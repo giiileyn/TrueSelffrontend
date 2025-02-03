@@ -14,6 +14,7 @@ import Sphere from "./components/user/sphere";
 import MoodEntry from "./page/moodEntry";
 import MoodDashboard from "./page/moodDashboard";
 import SuccessVerified from "./page/SucessVerified";
+import testAnxiety from "./page/testAnxiety";
 
 import Siri from "./page/siri";
 import DiaryEditor from "./page/Diary";
@@ -26,6 +27,7 @@ import AdminEmail from "./page/admin/email";
 import AdminContact from "./page/admin/contacts";
 import AdminProfile from "./page/admin/profile";
 import AdminSpaces from "./page/admin/spaces";
+import AdminUsers from "./page/admin/users";
 import { ToastContainer } from "react-toastify";
 import "./index.css";
 
@@ -42,7 +44,7 @@ const App = () => {
           <Route path="/mood" element={<MoodIndex />} />
           <Route path="/mood-dashboard" element={<MoodDashboard />} />
           <Route path="/profile" element={<Profile />} />
-
+          <Route path="/test-anxiety" element={<testAnxiety />} />
           <Route path="/myDiary" element={<DiaryEditor />} />
         </Route>
         <Route path="/success-verified/:token" element={<SuccessVerified />} />
@@ -71,6 +73,7 @@ const App = () => {
           <Route path="contacts" element={<AdminContact />} />
           <Route path="profile" element={<AdminProfile />} />
           <Route path="spaces" element={<AdminSpaces />} />
+          <Route path="users" element={<AdminUsers />} />
         </Route>
       </Routes>
 

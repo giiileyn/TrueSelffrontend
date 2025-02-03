@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Menu } from "@mui/icons-material";
-// import SearchIcon from "@mui/icons-material/Search";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-// import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
@@ -77,9 +75,7 @@ const Navbar = ({ toggleSidebar }) => {
               className="text-black flex items-center gap-3"
             >
               <img
-                src={
-                  "https://static.vecteezy.com/system/resources/thumbnails/005/346/410/small_2x/close-up-portrait-of-smiling-handsome-young-caucasian-man-face-looking-at-camera-on-isolated-light-gray-studio-background-photo.jpg"
-                }
+                src={user.profile.url}
                 alt="User Profile Pic"
                 className="rounded-full w-12 h-12"
               />

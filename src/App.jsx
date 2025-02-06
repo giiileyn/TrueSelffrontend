@@ -9,6 +9,8 @@ import Help from "./page/Help";
 import Contact from "./page/Contact";
 import Aboutus from "./page/Aboutus";
 import ComPage from "./page/ComPage";
+import Desk1 from "./page/Desk1";
+import Calendar from "./page/Calendar";
 import MoodIndex from "./page/moodIndex";
 import Sphere from "./components/user/sphere";
 import MoodEntry from "./page/moodEntry";
@@ -16,17 +18,6 @@ import MoodDashboard from "./page/moodDashboard";
 import SuccessVerified from "./page/SucessVerified";
 import testAnxiety from "./page/testAnxiety";
 
-<<<<<<< HEAD
-
-import Login from './auth/Login';
-import Register from './auth/Register';
-import Home from './page/Home';
-import Profile from './page/Profile'
-import Help from './page/Help';
-import Aboutus from './page/Aboutus';
-import ComPage from './page/ComPage';
-import Desk1 from './page/Desk1';
-=======
 import Siri from "./page/siri";
 import DiaryEditor from "./page/Diary";
 import UserLayout from "./components/user/Layout";
@@ -41,7 +32,6 @@ import AdminSpaces from "./page/admin/spaces";
 import AdminUsers from "./page/admin/users";
 import { ToastContainer } from "react-toastify";
 import "./index.css";
->>>>>>> 7e24b1dbddac1a8200c3b08cf873305d920287fc
 
 const App = () => {
   return (
@@ -53,11 +43,8 @@ const App = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/community" element={<ComPage />} />
-<<<<<<< HEAD
           <Route path="/desk1" element={<Desk1 />} />
-        </Routes>
-      </div>
-=======
+          <Route path="/calendar" element={<Calendar />} />
           <Route path="/mood" element={<MoodIndex />} />
           <Route path="/mood-dashboard" element={<MoodDashboard />} />
           <Route path="/profile" element={<Profile />} />
@@ -95,7 +82,6 @@ const App = () => {
       </Routes>
 
       <ToastContainer />
->>>>>>> 7e24b1dbddac1a8200c3b08cf873305d920287fc
     </Router>
   );
 };

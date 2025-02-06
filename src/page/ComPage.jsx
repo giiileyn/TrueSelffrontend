@@ -89,15 +89,11 @@ const ComPage = () => {
       <main className="main-content">
         <div className="top-section">
           <div className="card">
-            <img src="/page/image1.png" alt="Community" />
+            <img src="/page/community.png" alt="Community" />
             <p>Lorem ipsum dolor sit amet...</p>
           </div>
           <div className="card">
-            <img src="/page/image2.png" alt="Community" />
-            <p>Lorem ipsum dolor sit amet...</p>
-          </div>
-          <div className="card">
-            <img src="/page/image3.png" alt="Community" />
+            <img src="/page/community.png" alt="Community" />
             <p>Lorem ipsum dolor sit amet...</p>
           </div>
         </div>
@@ -128,18 +124,25 @@ const ComPage = () => {
       </main>
 
      
-      <aside className="right-sidebar">
-        <h3>Popular Communities</h3>
-        <ul>
-          <li>tr/Relationships (3,330,200 members)</li>
-          <li>tr/LifeAdvices (10,200 members)</li>
-          <li>tr/MentalHealth (100,200 members)</li>
-          <li>tr/MentalHealth (1,000,200 members)</li>
-          <li>
-            <Link to="#">See more</Link>
-          </li>
-        </ul>
-      </aside>
+  <div className="right-sidebar">
+  <div className="card1">
+    <img src="/page/community.png" alt="Community" />
+    <p>Lorem ipsum dolor sit amet...</p>
+  </div>
+
+  <div className="popular-communities">
+    <h3>Popular Communities</h3>
+    <ul>
+      <li>tr/Relationships (3,330,200 members)</li>
+      <li>tr/LifeAdvices (10,200 members)</li>
+      <li>tr/MentalHealth (100,200 members)</li>
+      <li>tr/MentalHealth (1,000,200 members)</li>
+      <li>
+        <Link to="#">See more</Link>
+      </li>
+    </ul>
+  </div>
+  </div>
     </div>
   );
 };

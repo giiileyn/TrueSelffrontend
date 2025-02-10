@@ -160,7 +160,7 @@ const MoodEntry = () => {
       {isSubmitted ? (
         <div className="flex flex-col items-center justify-center w-full max-w-md p-6 rounded-xl bg-white shadow-lg">
           <div className="text-4xl mb-4 text-gray-800">
-            {selectedMood?.icon}
+            <img src={selectedMood?.icon} width={75} height={75} alt="" />
           </div>
           <h2 className="text-3xl font-semibold text-gray-700 mb-6">
             {selectedMood?.name} Mood

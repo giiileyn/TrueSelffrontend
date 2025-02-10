@@ -100,7 +100,7 @@ const Navbar = () => {
             alt=""
           />
           <h5
-            className="text-black font-semibold font-serif  "
+            className="text-black font-semibold   "
             style={{ color: colors.pink }}
           >
             True Self
@@ -123,20 +123,17 @@ const Navbar = () => {
             <NavLink
               key={path}
               to={path}
-              style={({ isActive }) => ({
-                padding: "8px 16px",
-                fontWeight: "bold",
-                color: "black",
-                transition: "color 0.2s ease-in-out",
-                cursor: "pointer",
-                textDecoration: "none",
-              })}
-              onMouseEnter={(e) => (e.target.style.color = colors.pink)}
-              onMouseLeave={(e) =>
-                (e.target.style.color = isActive
-                  ? colors.active
-                  : colors.inactive)
+              className={({ isActive }) =>
+                `px-4 py-2 font-bold transition-colors duration-200 cursor-pointer ${
+                  isActive ? "text-purple-400" : "text-black"
+                }`
               }
+              onMouseEnter={(e) => {
+                e.target.classList.add("text-purple-400", "underline");
+              }}
+              onMouseLeave={(e) => {
+                e.target.classList.remove("text-purple-400", "underline");
+              }}
             >
               {path === "/"
                 ? "Home"
@@ -225,6 +222,13 @@ const Navbar = () => {
                 <ListItem button component={NavLink} to="/mood">
                   <ListItemText
                     primary="Mood Tracker"
+                    sx={{ color: "black" }}
+                  />
+                </ListItem>
+
+                <ListItem button component={NavLink} to="/test-anxiety">
+                  <ListItemText
+                    primary="Anxiety Test"
                     sx={{ color: "black" }}
                   />
                 </ListItem>

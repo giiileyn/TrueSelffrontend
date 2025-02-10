@@ -55,10 +55,13 @@ const Navbar = ({ toggleSidebar }) => {
     <nav className="text-white flex items-center justify-center py-2 px-4 bg-white">
       <div className="ml-auto flex items-center w-full ">
         {/* Menu Icon */}
-        <button onClick={toggleSidebar} className="text-black mr-4">
+        <button
+          onClick={toggleSidebar}
+          className="text-black mr-4 cursor-pointer"
+        >
           <Menu
             style={{ fontSize: "30px" }}
-            className="text-gray-400 mb-1 ml-2"
+            className="text-gray-400 mb-1 ml-2 "
           />
         </button>
         {/* Right Side Icons */}

@@ -23,7 +23,7 @@ import ChangePasswordModal from "../../components/admin/modals/ChangePassword.mo
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import AxiosInstance from "../../../utils/AxiosInstance";
-
+import { Facebook, Google } from "@mui/icons-material";
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -46,6 +46,9 @@ const Profile = () => {
     setIsPasswordModalOpen(false);
   };
 
+  const handleLinkFacebookAccount = async () => {
+    console.log("Linking Facebook account");
+  };
   const handleLinkGoogleAccount = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse?.credential);
     const userId = user._id;
@@ -96,20 +99,19 @@ const Profile = () => {
   };
 
   return (
-    <Box className="container" sx={{ maxWidth: "lg", marginTop: 8 }}>
+    <Box className="container" sx={{ maxWidth: "xl", marginTop: 3 }}>
       {/* Page Header */}
       <Box display="flex" justifyContent="space-between" mb={4}>
-        <Typography variant="h4" fontWeight="bold">
-          Admin Profile
-        </Typography>
+        <h1 className="font-bold text-2xl">Admin Profile</h1>
+
         <Typography variant="body2" color="text.secondary">
-          <span className="text-blue-500 hover:underline">Home</span> /{" "}
+          <span className="text-blue-500 hover:underline">Home</span> /
           <span> Profile</span>
         </Typography>
       </Box>
 
       {/* Profile Information Section */}
-      <Paper elevation={3} sx={{ padding: 3, borderRadius: 2 }}>
+      <Paper elevation={3} sx={{ padding: 3, width: "100%", borderRadius: 2 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Box display="flex" alignItems="center" gap={2}>
             {/* Profile Image with Camera Icon */}
@@ -162,19 +164,9 @@ const Profile = () => {
             </Box>
             {/* User Details */}
             <Box>
-              <Typography variant="h6" fontWeight="semibold">
-                {user.name || "Admin"}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {user?.email || "admin@example.com"}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                fontWeight="bold"
-              >
-                Administrator
-              </Typography>
+              <h6 className="font-semibold text-xl">{user.name || "Admin"}</h6>
+              <p className="text-gray-400">{user?.email}</p>
+              <p className="text-gray-500">Administrator</p>
             </Box>
           </Box>
           {/* Edit Profile Button */}
@@ -184,76 +176,93 @@ const Profile = () => {
         </Box>
       </Paper>
 
-      <Grid2 container spacing={4} mt={4}>
-        <Grid2 item xs={12} md={6}>
-          <Paper elevation={3} sx={{ padding: 3, borderRadius: 2 }}>
-            <Typography variant="h6" fontWeight="semibold" gutterBottom>
-              Profile Details
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              <strong>Name:</strong> {user.name || "N/A"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              <strong>Date of Birth:</strong>{" "}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+        {/* Profile detail card */}
+        <div className="bg-gradient-to-r from-white to-gray-100 shadow-lg rounded-xl p-6 w-full max-w-full mx-auto">
+          <h2 className="text-xl font-bold text-gray-800 text-center mb-4">
+            Profile Details
+          </h2>
+          <div className="space-y-4">
+            <p className="text-gray-700">
+              <strong className="font-semibold">Name:</strong>{" "}
+              {user?.name || "N/A"}
+            </p>
+            <p className="text-gray-700">
+              <strong className="font-semibold">Date of Birth:</strong>{" "}
               {user?.dob ? formatDate(user.dob) : "N/A"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              <strong>Email:</strong> {user?.email || "N/A"}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              <strong>Phone:</strong> {user?.phoneNumber || "N/A"}
-            </Typography>
+            </p>
+            <p className="text-gray-700">
+              <strong className="font-semibold">Email:</strong>{" "}
+              {user?.email || "N/A"}
+            </p>
+            <p className="text-gray-700">
+              <strong className="font-semibold">Phone:</strong>{" "}
+              {user?.phoneNumber || "N/A"}
+            </p>
+          </div>
+          <div className="flex justify-center mt-6">
+            <button
+              className="bg-red-500 text-white px-4 py-2 rounded-lg shadow-md transition hover:bg-red-600 hover:scale-105"
+              onClick={handleOpenPasswordModal}
+            >
+              Change Password
+            </button>
+          </div>
+        </div>
 
-            {/* Change Password Button */}
-            <Box display="flex" justifyContent="center" mt={4}>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleOpenPasswordModal}
+        <div className="bg-gradient-to-r from-white to-gray-100 shadow-lg rounded-xl p-6 w-full max-w-md mx-auto">
+          <h2 className="text-xl font-bold text-gray-800 text-center mb-4">
+            Linked Accounts
+          </h2>
+          {/* Facebook Section */}
+          <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg shadow-sm mb-3">
+            <div className="flex items-center space-x-3">
+              <Facebook className="text-blue-600" fontSize="large" />
+              <p className="text-gray-700">
+                <strong>Facebook:</strong>
+              </p>
+            </div>
+            {user?.socialAccounts?.find(
+              (account) => account.provider === "facebook"
+            ) ? (
+              <button className="border border-blue-500 text-blue-500 px-3 py-1 rounded-lg hover:bg-blue-500 hover:text-white transition">
+                Already Linked
+              </button>
+            ) : (
+              <button
+                onClick={handleLinkFacebookAccount} // Implement this function
+                className="border border-blue-500 text-blue-500 px-3 py-1 rounded-lg hover:bg-blue-500 hover:text-white transition"
               >
-                Change Password
-              </Button>
-            </Box>
-          </Paper>
-        </Grid2>
-
-        {/* Linked Accounts Section */}
-        <Grid2 item xs={12} md={6}>
-          <Paper elevation={3} sx={{ padding: 3, borderRadius: 2 }}>
-            <Typography variant="h6" fontWeight="semibold" gutterBottom>
-              Linked Accounts
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              <strong>Facebook:</strong>{" "}
-              {user?.linkedAccounts?.facebook || "Not Linked"}
-              {!user?.linkedAccounts?.facebook && (
-                <Button variant="outlined" color="primary" sx={{ ml: 2 }}>
-                  Link Facebook
-                </Button>
-              )}
-            </Typography>
-            <Typography variant="body2" color="text.secondary" paragraph>
-              <strong>Google:</strong>{" "}
-              {user?.socialAccounts?.find(
-                (account) => account.provider === "google"
-              ) ? (
-                <Button variant="outlined" color="primary" sx={{ ml: 2 }}>
-                  Already Linked
-                </Button>
-              ) : (
-                <GoogleLogin
-                  onSuccess={handleLinkGoogleAccount}
-                  onError={() => {
-                    console.error("Google login failed");
-                    alert("Failed to authenticate with Google.");
-                  }}
-                  clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
-                />
-              )}
-            </Typography>
-          </Paper>
-        </Grid2>
-      </Grid2>
+                Link Facebook
+              </button>
+            )}
+          </div>
+          {/* Google Section */}
+          <div className="flex items-center justify-between bg-gray-50 p-3 rounded-lg shadow-sm">
+            <div className="flex items-center space-x-3">
+              <Google className="text-red-500" fontSize="large" />
+              <p className="text-gray-700">
+                <strong>Google:</strong>
+              </p>
+            </div>
+            {user?.socialAccounts?.find(
+              (account) => account.provider === "google"
+            ) ? (
+              <button className="border border-green-500 text-green-500 px-3 py-1 rounded-lg hover:bg-green-500 hover:text-white transition">
+                Already Linked
+              </button>
+            ) : (
+              <GoogleLogin
+                onSuccess={handleLinkGoogleAccount}
+                onError={() => {
+                  console.error("Google login failed");
+                  alert("Failed to authenticate with Google.");
+                }}
+              />
+            )}
+          </div>
+        </div>
+      </div>
 
       {isModalOpen && (
         <ProfileModal

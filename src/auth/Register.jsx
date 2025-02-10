@@ -24,7 +24,7 @@ const Register = () => {
     control,
     handleSubmit,
     getValues,
-    trigger, // Added trigger for validation
+    trigger,
     formState: { errors },
   } = useForm({
     mode: "onBlur",
@@ -57,14 +57,11 @@ const Register = () => {
   };
 
   const nextStep = async () => {
-    // Trigger validation for the current step's fields
     const isValid = await trigger();
 
-    // If validation is successful, proceed to the next step
     if (isValid) {
       setCurrentStep(currentStep + 1);
     } else {
-      // Optionally, you can show a toast notification or focus on the first error
       toast.error("Please fill out all required fields.");
     }
   };
@@ -76,7 +73,7 @@ const Register = () => {
   return (
     <div>
       {/* Curved top section */}
-      <div className="register-curved-top"></div>
+      <div className="register-curved-top hidden sm:block"></div>
 
       <div className="register-container">
         {/* Left Section: Registration Form */}

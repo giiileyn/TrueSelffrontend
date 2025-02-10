@@ -14,7 +14,8 @@ import Sphere from "./components/user/sphere";
 import MoodEntry from "./page/moodEntry";
 import MoodDashboard from "./page/moodDashboard";
 import SuccessVerified from "./page/SucessVerified";
-import testAnxiety from "./page/testAnxiety";
+import TestAnxiety from "./page/testAnxiety";
+import Recommend from "./page/recommend";
 
 import Siri from "./page/siri";
 import DiaryEditor from "./page/Diary";
@@ -44,9 +45,11 @@ const App = () => {
           <Route path="/mood" element={<MoodIndex />} />
           <Route path="/mood-dashboard" element={<MoodDashboard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/test-anxiety" element={<testAnxiety />} />
+          <Route path="/test-anxiety" element={<TestAnxiety />} />
           <Route path="/myDiary" element={<DiaryEditor />} />
+          <Route path="/recommend" element={<Recommend />} />
         </Route>
+
         <Route path="/success-verified/:token" element={<SuccessVerified />} />
         <Route path="/record-mood" element={<MoodEntry />} />
         <Route path="/sphere" element={<Sphere />} />

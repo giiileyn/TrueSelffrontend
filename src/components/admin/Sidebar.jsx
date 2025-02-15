@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import GroupIcon from "@mui/icons-material/Group";
-import PersonIcon from "@mui/icons-material/Person";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ArticleIcon from "@mui/icons-material/Article";
+import {
+  Dashboard as DashboardIcon,
+  Group as GroupIcon,
+  Person as PersonIcon,
+  Logout as LogoutIcon,
+  Article as ArticleIcon,
+  Groups2 as Groups2Icon,
+} from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../utils/helpers";
 import Swal from "sweetalert2";
@@ -170,6 +173,51 @@ const Sidebar = ({ isMinimized }) => {
               }}
             >
               Users
+            </span>
+          </li>
+        </Link>
+        <Link to="/admin/communities">
+          <li
+            className="mt-3 py-2 px-8 text-gray-400 cursor-pointer flex items-center w-full transition-colors duration-300 ease-in-out relative"
+            onMouseOver={() => setHovered("users")}
+            onMouseOut={() => setHovered(null)}
+            onClick={() => handleItemClick("users")}
+            style={{
+              backgroundColor:
+                hovered === "communities" || selected === "communities"
+                  ? "#161621"
+                  : "transparent",
+            }}
+          >
+            {selected === "communities" && (
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-[#D1B1D3]" />
+            )}
+            <div
+              className="mr-5 rounded-md transition-colors duration-300 ease-in-out"
+              style={{ backgroundColor: "#2B3138" }}
+            >
+              <Groups2Icon
+                style={{
+                  color: "#D1B1D3",
+                  fontSize: "1.7rem",
+                  lineHeight: "1",
+                }}
+                className="p-1"
+              />
+            </div>
+            <span
+              className={`transition-all ease-in-out duration-500 ${
+                isMinimized ? "hidden" : "block"
+              }`}
+              style={{
+                fontSize: "16px",
+                color:
+                  hovered === "communities" || selected === "communities"
+                    ? "white"
+                    : "#9ca3af",
+              }}
+            >
+              Communities
             </span>
           </li>
         </Link>

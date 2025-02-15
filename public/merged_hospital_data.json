@@ -123,8 +123,8 @@
       "Contact Number": ["(02) 8837-8132"],
       "Email": "Not available",
       "Coordinates": {
-        "Latitude": 14.4891,
-        "Longitude": 121.0453
+        "Latitude": 14.510855637992663,
+        "Longitude": 121.03410115727964
       },
       "Source": "owwamember.com",
       "Specialties": [
@@ -1259,8 +1259,7 @@
         "Latitude": 14.38823327661468,
         "Longitude": 121.02985550870942
       },
-      "Specialties": [],
-      "Source": "Excel Data"
+      "Specialties": []
     }
   },
   "Navotas City": {
@@ -1272,8 +1271,7 @@
         "Latitude": 14.662100032574171,
         "Longitude": 120.94640512518144
       },
-      "Specialties": [],
-      "Source": "Excel Data"
+      "Specialties": []
     }
   }
 }

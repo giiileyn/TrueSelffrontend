@@ -94,13 +94,21 @@ const Recommend = () => {
               {hospitals.slice(0, visibleHospitals).map((hospital, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between border-b pb-3 mb-3"
+                  className="flex items-center justify-between border-b pb-3 mb-3 transition duration-300 ease-in-out transform hover:bg-gray-100 hover:shadow-lg p-3 rounded-lg"
                 >
                   <div>
                     <p className="font-semibold text-lg">{hospital.name}</p>
                     <p className="text-gray-500 text-sm">
                       {hospital.Address} • {hospital.distance} km away
                     </p>
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${hospital.Coordinates.Latitude},${hospital.Coordinates.Longitude}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-500 hover:underline"
+                    >
+                      View on Google Maps
+                    </a>
                   </div>
                 </div>
               ))}

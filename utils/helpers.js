@@ -132,3 +132,8 @@ export const getAge = (dob) => {
 
   return age;
 };
+
+export const getRandomColor = () => {
+  const colors = ["#C8A2C8", "#FFDAB9", "#B0E0E6", "#B5EAD7", "#F4DAD1"];
+  return colors[Math.floor(Math.random() * colors.length)];
+};

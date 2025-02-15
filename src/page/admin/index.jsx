@@ -6,10 +6,12 @@ import AnxietyBarChart from "../../components/admin/charts/AnxietyBarChart";
 import { AccountCircle } from "@mui/icons-material";
 import PeopleIcon from "@mui/icons-material/People";
 import EventIcon from "@mui/icons-material/Event";
+import { Link } from "react-router-dom";
+
 const index = () => {
   const [userCount, setUserCount] = useState(0);
   const [spaceCount, setSpaceCount] = useState(0);
-  const [activityCount, setActivityCount] = useState(0);
+  const [anxietyTestCount, setAnxietyTestCount] = useState(0);
 
   const user = getUser();
   const fetchUserCount = async () => {
@@ -37,9 +39,22 @@ const index = () => {
     }
   };
 
+  const fetchAnxietyTestCount = async () => {
+    try {
+      await AxiosInstance.get("/anxietyPredictions/count").then((response) => {
+        if (response.status === 200) {
+          setAnxietyTestCount(response.data.count);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchUserCount();
     fetchSpaceCount();
+    fetchAnxietyTestCount();
   }, []);
 
   return (
@@ -56,9 +71,11 @@ const index = () => {
             <h4 className="text-3xl font-bold text-gray-900 bg-white inline-block px-4 py-1 rounded-lg shadow">
               {userCount}
             </h4>
-            <button className="mt-4 px-4 py-2 bg-white text-[#8B47B5] font-semibold rounded-lg hover:bg-[#FFD700] transition-colors">
-              View Users
-            </button>
+            <Link to="/admin/users">
+              <button className="mt-4 px-4 py-2 bg-white text-[#8B47B5] font-semibold rounded-lg hover:bg-[#FFD700] transition-colors">
+                View Users
+              </button>
+            </Link>
           </div>
 
           {/* Spaces Card */}
@@ -84,11 +101,8 @@ const index = () => {
               AI Prediction Test
             </h6>
             <h4 className="text-3xl font-bold text-gray-900 bg-white inline-block px-4 py-1 rounded-lg shadow">
-              {activityCount}
+              {anxietyTestCount}
             </h4>
-            <button className="mt-4 px-4 py-2 bg-white text-[#014871] font-semibold rounded-lg hover:bg-[#FFD700] transition-colors">
-              View Activities
-            </button>
           </div>
         </div>
       </div>
@@ -110,6 +124,11 @@ const index = () => {
             <AnxietyBarChart />
           </div>
         </div>
+      </div>
+
+      {/* Map container */}
+      <div className="mt-8">
+        <Map />
       </div>
     </div>
   );

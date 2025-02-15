@@ -133,7 +133,10 @@ const Contacts = () => {
                 <TableBody>
                   {paginatedContacts.length > 0 ? (
                     paginatedContacts.map((contact, index) => (
-                      <TableRow key={contact._id}>
+                      <TableRow
+                        key={contact._id}
+                        className="even:bg-gray-50 odd:bg-white hover:bg-gray-100 transition-all"
+                      >
                         <TableCell>
                           {(page - 1) * rowsPerPage + index + 1}
                         </TableCell>

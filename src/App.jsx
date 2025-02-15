@@ -16,6 +16,9 @@ import MoodDashboard from "./page/moodDashboard";
 import SuccessVerified from "./page/SucessVerified";
 import TestAnxiety from "./page/testAnxiety";
 import Recommend from "./page/recommend";
+import CrisisSupport from "./page/CrisisSupport";
+import TermsOfService from "./page/termsOfService";
+import PrivacyPolicy from "./page/privacyPolicy";
 
 import Siri from "./page/siri";
 import DiaryEditor from "./page/Diary";
@@ -39,15 +42,34 @@ const App = () => {
         {/* Routes for user */}
         <Route path="/" element={<UserLayout />}>
           <Route index element={<Home />} />
+          <Route path="/terms-of-service" element={<TermsOfService />} />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/community" element={<ComPage />} />
-          <Route path="/mood" element={<MoodIndex />} />
-          <Route path="/mood-dashboard" element={<MoodDashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/test-anxiety" element={<TestAnxiety />} />
+          <Route
+            path="/mood"
+            element={<ProtectedRoute element={<MoodIndex />} />}
+          />
+
+          <Route
+            path="/mood-dashboard"
+            element={<ProtectedRoute element={<MoodDashboard />} />}
+          />
+
+          <Route
+            path="/profile"
+            element={<ProtectedRoute element={<Profile />} />}
+          />
+
+          <Route
+            path="/test-anxiety"
+            element={<ProtectedRoute element={<TestAnxiety />} />}
+          />
+
           <Route path="/myDiary" element={<DiaryEditor />} />
           <Route path="/recommend" element={<Recommend />} />
+          <Route path="/crisis-support" element={<CrisisSupport />} />
         </Route>
 
         <Route path="/success-verified/:token" element={<SuccessVerified />} />

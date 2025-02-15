@@ -52,7 +52,7 @@ const Email = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto  p-6 bg-white rounded-lg shadow-xl">
+    <div className="max-w-xl mx-auto my-5  p-6 bg-white rounded-lg shadow-xl">
       <h4 className="text-center text-3xl font-semibold text-gray-800 mb-8">
         Send Email
       </h4>

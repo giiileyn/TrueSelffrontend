@@ -46,7 +46,7 @@ const spaces = () => {
         </h1>
         <p style={{ fontSize: "13.5px" }}>
           <span className="text-blue-500 hover:underline">Home</span> /
-          <span className="text-gray-500"> Contacts</span>
+          <span className="text-gray-500"> Spaces</span>
         </p>
       </div>
       <Button

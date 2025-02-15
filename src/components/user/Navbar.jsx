@@ -83,13 +83,14 @@ const Navbar = () => {
   return (
     <nav
       style={{
-        background: "transparent",
+        background: "#FAFAFA",
         position: "absolute",
         top: 0,
         left: 0,
         width: "100%",
         zIndex: 10,
         padding: "16px",
+        borderBottom: "1px solid #E0E0E0",
       }}
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -100,7 +101,7 @@ const Navbar = () => {
             alt=""
           />
           <h5
-            className="text-black font-semibold   "
+            className="text-black font-semibold  font-raleway  "
             style={{ color: colors.pink }}
           >
             True Self
@@ -224,6 +225,9 @@ const Navbar = () => {
                     primary="Mood Tracker"
                     sx={{ color: "black" }}
                   />
+                </ListItem>
+                <ListItem button component={NavLink} to="/myDiary">
+                  <ListItemText primary="My Journal" sx={{ color: "black" }} />
                 </ListItem>
 
                 <ListItem button component={NavLink} to="/test-anxiety">

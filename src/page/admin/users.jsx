@@ -18,7 +18,7 @@ const Users = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const rowsPerPage = 10; // Adjust the number of rows per page
+  const rowsPerPage = 10;
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -38,7 +38,6 @@ const Users = () => {
     fetchUsers();
   }, []);
 
-  // Handle pagination logic
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -107,7 +106,10 @@ const Users = () => {
                 <TableBody>
                   {paginatedUsers.length > 0 ? (
                     paginatedUsers.map((user, index) => (
-                      <TableRow key={user._id}>
+                      <TableRow
+                        key={user._id}
+                        className="even:bg-gray-50 odd:bg-white hover:bg-gray-100 transition-all"
+                      >
                         <TableCell>
                           {(page - 1) * rowsPerPage + index + 1}
                         </TableCell>

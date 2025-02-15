@@ -27,7 +27,7 @@ import { Facebook, Google } from "@mui/icons-material";
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null); // State to hold the selected file
+  const [selectedFile, setSelectedFile] = useState(null);
   const user = getUser();
 
   const handleEditProfile = () => {
@@ -49,6 +49,7 @@ const Profile = () => {
   const handleLinkFacebookAccount = async () => {
     console.log("Linking Facebook account");
   };
+
   const handleLinkGoogleAccount = async (credentialResponse) => {
     const decoded = jwtDecode(credentialResponse?.credential);
     const userId = user._id;

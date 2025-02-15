@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
 import AxiosAIInstance from "../../utils/AxiosAIInstance";
+import AxiosInstance from "../../utils/AxiosInstance";
 import { getUser, getAge } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -30,7 +31,7 @@ const TestAnxiety = () => {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    // console.log(data);
+    const userId = user._id;
     const occupationOptions = [
       "Engineer",
       "Other",
@@ -59,8 +60,7 @@ const TestAnxiety = () => {
     const dob = user.dob;
 
     const cleanedData = {
-      // Age: getAge(dob),
-      Age: 56,
+      Age: getAge(dob),
       "Sleep Hours": data.sleepDuration,
       "Physical Activity (hrs/week)": data.exerciseMinutes,
       "Caffeine Intake (mg/day)": data.caffeineIntake,
@@ -79,7 +79,7 @@ const TestAnxiety = () => {
       ...occupationEncoding, // Spread the one-hot encoded occupation fields
     };
 
-    AxiosAIInstance.post("/predict", cleanedData).then((response) => {
+    AxiosAIInstance.post(`/predict/${userId}`, cleanedData).then((response) => {
       console.log(response.data);
       const severity = Math.round(response.data.predicted_severity);
       if (severity > 5) {
@@ -121,19 +121,28 @@ const TestAnxiety = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
           {/* Job Role */}
           <div className="flex flex-col">
-            <label className="font-medium text-gray-700">
-              1. What's your job role?
+            <label htmlFor="jobRole" className="font-medium text-gray-700">
+              1. What's your occupation?
             </label>
             <Controller
               name="jobRole"
               control={control}
               rules={{ required: "This is required" }}
               render={({ field }) => (
-                <Select {...field} options={jobOptions} className="mt-1" />
+                <Select
+                  {...field}
+                  inputId="jobRole"
+                  options={jobOptions}
+                  className="mt-1"
+                  placeholder="Select an occupation"
+                  aria-describedby="jobRole-error"
+                />
               )}
             />
             {errors.jobRole && (
-              <p className="text-red-500 text-sm">{errors.jobRole.message}</p>
+              <p className="text-red-500 text-sm" id="jobRole-error">
+                {errors.jobRole.message}
+              </p>
             )}
           </div>
 
@@ -188,16 +197,16 @@ const TestAnxiety = () => {
             },
             {
               label:
-                "7. Breathing rate during anxiety attack? (breaths per minute)",
+                "7. Breathing rate during anxiety attack? (Breaths per Minute - BPM)",
               name: "breathingRate",
             },
             {
               label:
-                "8. On a scale of 1 to 5, how severe is sweating during an anxiety attack?",
+                "8. On a scale of 1 to 5, how severe is sweating during an anxiety attack? (Subjective scale)",
               name: "sweatingSeverity",
             },
             {
-              label: "9. Therapy sessions per month?",
+              label: "9. Therapy sessions per month? (Sessions/Month)",
               name: "therapySessions",
             },
           ].map((field, index) => (
@@ -239,17 +248,24 @@ const TestAnxiety = () => {
             },
           ].map((field, index) => (
             <div key={index} className="flex flex-col">
-              <label className="font-medium text-gray-700">{field.label}</label>
+              <label htmlFor={field.name} className="font-medium text-gray-700">
+                {field.label}
+              </label>
               <Controller
                 name={field.name}
                 control={control}
                 rules={{ required: "This field is required" }}
                 render={({ field }) => (
-                  <Select {...field} options={yesNoOptions} className="mt-1" />
+                  <Select
+                    {...field}
+                    options={yesNoOptions}
+                    inputId={field.name}
+                    className="mt-1"
+                  />
                 )}
               />
               {errors[field.name] && (
-                <p className="text-red-500 text-sm">
+                <p className="text-red-500 text-sm" aria-live="assertive">
                   {errors[field.name]?.message}
                 </p>
               )}

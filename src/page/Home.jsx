@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Home.css";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -6,8 +6,10 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 
 const Home = () => {
+  const [showScrollButton, setShowScrollButton] = useState(false);
   const testimonials = [
     {
       name: "Leo",
@@ -37,6 +39,28 @@ const Home = () => {
         "https://images.pexels.com/photos/1040880/pexels-photo-1040880.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     },
   ];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if the user is near the bottom of the page
+      if (
+        window.innerHeight + window.scrollY >=
+        document.body.scrollHeight - 100
+      ) {
+        setShowScrollButton(true);
+      } else {
+        setShowScrollButton(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
     <>
@@ -108,41 +132,41 @@ const Home = () => {
 
         {/* Offer Cards */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-20 mt-10">
-          <div class="flex flex-col items-center">
-            <div class="w-36 h-36 md:w-48 md:h-48 bg-[#B0E0E6] rounded-2xl shadow-lg">
+          <div className="flex flex-col items-center">
+            <div className="w-36 h-36 md:w-48 md:h-48 bg-[#B0E0E6] rounded-2xl shadow-lg">
               <img
                 src="/page/JOURNALING_HOME.png"
                 alt="Image description"
-                class="w-full h-full object-cover rounded-2xl"
+                className="w-full h-full object-cover rounded-2xl"
               />
             </div>
-            <p class="mt-2 text-center font-bold">
+            <p className="mt-2 text-center font-bold">
               Journaling and Mood Tracking
             </p>
           </div>
 
-          <div class="flex flex-col items-center">
-            <div class="w-36 h-36 md:w-48 md:h-48 bg-[#FFDAB9] rounded-2xl shadow-lg">
+          <div className="flex flex-col items-center">
+            <div className="w-36 h-36 md:w-48 md:h-48 bg-[#FFDAB9] rounded-2xl shadow-lg">
               <img
                 src="/page/AI_HOME.png"
                 alt="Image description"
-                class="w-full h-full object-cover rounded-2xl"
+                className="w-full h-full object-cover rounded-2xl"
               />
             </div>
-            <p class="mt-2 text-center font-bold">
+            <p className="mt-2 text-center font-bold">
               AI Prediction of Anxiety Level
             </p>
           </div>
 
-          <div class="flex flex-col items-center">
-            <div class="w-36 h-36 md:w-48 md:h-48 bg-[#F4DAD1] rounded-2xl shadow-lg">
+          <div className="flex flex-col items-center">
+            <div className="w-36 h-36 md:w-48 md:h-48 bg-[#F4DAD1] rounded-2xl shadow-lg">
               <img
                 src="/page/COMMUNITY_HOME.png"
                 alt="Image description"
-                class="w-full h-full object-cover rounded-2xl"
+                className="w-full h-full object-cover rounded-2xl"
               />
             </div>
-            <p class="mt-2 text-center font-bold">Community Forum</p>
+            <p className="mt-2 text-center font-bold">Community Forum</p>
           </div>
         </div>
       </div>
@@ -258,6 +282,14 @@ const Home = () => {
           />
         </div>
       </div>
+      {showScrollButton && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-5 right-5 p-3 bg-[#C8A2C8] text-white rounded-full shadow-lg hover:bg-[#A377A3] transition duration-300"
+        >
+          <ArrowUpwardIcon className="w-6 h-6" />
+        </button>
+      )}
     </>
   );
 };

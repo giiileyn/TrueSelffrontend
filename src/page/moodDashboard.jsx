@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Calendar from "../components/user/Calendar";
 import {
   PieChart,
   Pie,
@@ -92,6 +93,7 @@ const MoodDashboard = () => {
         </h1>
       </div>
 
+      <Calendar />
       <div className="flex flex-col md:flex-row justify-between items-center mt-8 w-full gap-5">
         {/* Line Chart - Monthly Mood */}
         <div className="w-full md:w-1/2 bg-white shadow-md p-4 rounded-lg">

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import "./Home.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -42,7 +43,6 @@ const Home = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Check if the user is near the bottom of the page
       if (
         window.innerHeight + window.scrollY >=
         document.body.scrollHeight - 100
@@ -66,7 +66,12 @@ const Home = () => {
     <>
       <div className="register-container">
         {/* Left Section: Text */}
-        <div className="left-row">
+        <motion.div
+          className="left-row"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           <h1 className="home-title1">Embrace yourself</h1>
           <p className="register-subtitle">
             Discover the power within you! Embrace your unique journey and
@@ -78,31 +83,46 @@ const Home = () => {
               Start Now!
             </button>
           </Link>
-          <Link to="/about-us">
+          <Link to="/about">
             <button type="submit" className="right-learnmore-btn">
               Learn More
             </button>
           </Link>
-        </div>
+        </motion.div>
 
         {/* Right Section: Image */}
-        <div className="right-row">
+        <motion.div
+          className="right-row"
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
           <img className="ml-5" src="/page/removeBgHome.png" alt="image" />
-        </div>
+        </motion.div>
       </div>
 
       {/* About section */}
       <div className="flex flex-col md:flex-row justify-center items-center gap-8 mt-10 px-4 md:px-10">
         {/* Left Section: Illustration */}
-        <div className="w-full md:w-1/3">
+        <motion.div
+          className="w-full md:w-1/3"
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1 }}
+        >
           <img
             src="/page/aboutus.png"
             alt="Illustration of diverse individuals supporting each other"
             className="w-full h-auto rounded-xl shadow-lg"
           />
-        </div>
+        </motion.div>
         {/* Right Section: Text */}
-        <div className="max-w-lg">
+        <motion.div
+          className="max-w-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
           <h1 className="font-bold text-2xl md:text-3xl mb-4">About Us</h1>
           <p className="text-gray-600 leading-relaxed">
             At TrueSelf, we understand the unique challenges that LGBTQ
@@ -116,23 +136,32 @@ const Home = () => {
               Learn More
             </button>
           </Link>
-        </div>
+        </motion.div>
       </div>
 
       {/* Our Offers Section */}
       <div className="flex flex-col items-center gap-8 mt-36 px-4 md:px-10">
         {/* Heading and Description */}
-        <div className="text-center">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
           <h1 className="font-bold text-4xl">Our Offers</h1>
           <p className="mt-2 text-lg">
             Track your emotions, share with a supportive community, and gain
             insights with AI-powered anxiety predictions—all in one place.
           </p>
-        </div>
+        </motion.div>
 
         {/* Offer Cards */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-20 mt-10">
-          <div className="flex flex-col items-center">
+          <motion.div
+            className="flex flex-col items-center"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <div className="w-36 h-36 md:w-48 md:h-48 bg-[#B0E0E6] rounded-2xl shadow-lg">
               <img
                 src="/page/JOURNALING_HOME.png"
@@ -143,9 +172,13 @@ const Home = () => {
             <p className="mt-2 text-center font-bold">
               Journaling and Mood Tracking
             </p>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col items-center">
+          <motion.div
+            className="flex flex-col items-center"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <div className="w-36 h-36 md:w-48 md:h-48 bg-[#FFDAB9] rounded-2xl shadow-lg">
               <img
                 src="/page/AI_HOME.png"
@@ -156,9 +189,13 @@ const Home = () => {
             <p className="mt-2 text-center font-bold">
               AI Prediction of Anxiety Level
             </p>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col items-center">
+          <motion.div
+            className="flex flex-col items-center"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
+          >
             <div className="w-36 h-36 md:w-48 md:h-48 bg-[#F4DAD1] rounded-2xl shadow-lg">
               <img
                 src="/page/COMMUNITY_HOME.png"
@@ -167,7 +204,7 @@ const Home = () => {
               />
             </div>
             <p className="mt-2 text-center font-bold">Community Forum</p>
-          </div>
+          </motion.div>
         </div>
       </div>
 
@@ -235,60 +272,85 @@ const Home = () => {
       </div>
 
       {/* Create memories with us section */}
-      <div className=" py-10 px-5">
+      <div className="py-10 px-5">
         <h2 className="text-2xl font-bold text-center mb-8">
           Create memories with us
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/1167034/pexels-photo-1167034.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 1"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/1304732/pexels-photo-1304732.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 2"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/919194/pexels-photo-919194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 3"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/1400259/pexels-photo-1400259.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 4"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/2432298/pexels-photo-2432298.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 5"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/2306841/pexels-photo-2306841.jpeg?auto=compress&cs=tinysrgb&w=600"
             alt="Memory 6"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/2566434/pexels-photo-2566434.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 7"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
-          <img
+          <motion.img
             src="https://images.pexels.com/photos/1612754/pexels-photo-1612754.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             alt="Memory 8"
             className="rounded-lg object-cover w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ type: "spring", stiffness: 300 }}
           />
         </div>
       </div>
+
+      {/* Scroll To Top */}
       {showScrollButton && (
-        <button
-          onClick={scrollToTop}
-          className="fixed bottom-5 right-5 p-3 bg-[#C8A2C8] text-white rounded-full shadow-lg hover:bg-[#A377A3] transition duration-300"
+        <motion.div
+          className="fixed bottom-10 right-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <ArrowUpwardIcon className="w-6 h-6" />
-        </button>
+          <button
+            onClick={scrollToTop}
+            className="bg-blue-500 text-white p-4 rounded-full shadow-lg"
+          >
+            <ArrowUpwardIcon />
+          </button>
+        </motion.div>
       )}
     </>
   );

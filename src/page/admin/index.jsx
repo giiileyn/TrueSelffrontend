@@ -3,6 +3,8 @@ import Map from "../../components/admin/Map";
 import AxiosInstance from "../../../utils/AxiosInstance";
 import { getUser, notifySuccess } from "../../../utils/helpers";
 import AnxietyBarChart from "../../components/admin/charts/AnxietyBarChart";
+import ContactEngagementChart from "../../components/admin/charts/ContactsLineChart";
+
 import { AccountCircle } from "@mui/icons-material";
 import PeopleIcon from "@mui/icons-material/People";
 import EventIcon from "@mui/icons-material/Event";
@@ -103,6 +105,11 @@ const index = () => {
             <h4 className="text-3xl font-bold text-gray-900 bg-white inline-block px-4 py-1 rounded-lg shadow">
               {anxietyTestCount}
             </h4>
+            <Link to="/admin/predictions">
+              <button className="mt-4 px-4 py-2 bg-white text-[#8B47B5] font-semibold rounded-lg hover:bg-[#FFD700] transition-colors">
+                View Results
+              </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -119,9 +126,9 @@ const index = () => {
 
           <div className="flex-1 bg-white rounded-lg shadow-lg p-6">
             <h3 className="text-2xl font-semibold text-gray-800 mb-4">
-              Anxiety Level
+              Contact Us Engagements
             </h3>
-            <AnxietyBarChart />
+            <ContactEngagementChart />
           </div>
         </div>
       </div>

@@ -4,14 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { useForm, Controller } from "react-hook-form";
 import { notifyError, notifySuccess, setUser } from "../../../../utils/helpers";
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Grid2,
-} from "@mui/material";
+import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import AxiosInstance from "../../../../utils/AxiosInstance";
 import dayjs from "dayjs";
 
@@ -36,7 +29,7 @@ const Profile = ({ onClose, user, isEditing }) => {
     control,
     reset,
     setError,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = useForm({
     mode: "onChange",
     defaultValues: {
@@ -108,8 +101,8 @@ const Profile = ({ onClose, user, isEditing }) => {
           Update Profile
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid2 container spacing={2}>
-            <Grid2 item xs={12} sm={6}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
               <TextField
                 label="Name"
                 fullWidth
@@ -118,9 +111,9 @@ const Profile = ({ onClose, user, isEditing }) => {
                 helperText={errors.name?.message}
                 {...register("name", { required: "Name is required" })}
               />
-            </Grid2>
+            </div>
 
-            <Grid2 item xs={12}>
+            <div className="col-span-1 sm:col-span-2">
               <Controller
                 name="dob"
                 rules={{ required: "Date of Birth is required" }}
@@ -142,8 +135,9 @@ const Profile = ({ onClose, user, isEditing }) => {
                   </LocalizationProvider>
                 )}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </div>
+
+            <div className="col-span-1 sm:col-span-2">
               <TextField
                 label="Email"
                 fullWidth
@@ -165,8 +159,9 @@ const Profile = ({ onClose, user, isEditing }) => {
                   },
                 })}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </div>
+
+            <div className="col-span-1 sm:col-span-2">
               <TextField
                 label="Phone Number"
                 fullWidth
@@ -181,21 +176,17 @@ const Profile = ({ onClose, user, isEditing }) => {
                   },
                 })}
               />
-            </Grid2>
-            <Grid2 item xs={12} display="flex" justifyContent="flex-end">
-              <Button
-                onClick={onClose}
-                variant="outlined"
-                sx={{ mr: 2 }}
-                color="secondary"
-              >
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained" color="primary">
-                Update
-              </Button>
-            </Grid2>
-          </Grid2>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-4">
+            <Button onClick={onClose} variant="outlined" color="secondary">
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained" color="primary">
+              Update
+            </Button>
+          </div>
         </form>
       </Paper>
     </Box>

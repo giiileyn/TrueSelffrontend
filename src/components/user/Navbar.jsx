@@ -96,7 +96,7 @@ const Navbar = () => {
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <div className="flex items-center justify-center space-x-3">
           <img
-            src="../../../public/logo/trueself5.png"
+            src="/logo/trueself5.png"
             className="w-10 h-10 object-cover"
             alt=""
           />

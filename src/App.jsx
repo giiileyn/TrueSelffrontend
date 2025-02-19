@@ -32,6 +32,7 @@ import AdminContact from "./page/admin/contacts";
 import AdminProfile from "./page/admin/profile";
 import AdminSpaces from "./page/admin/spaces";
 import AdminUsers from "./page/admin/users";
+import AdminPredictions from "./page/admin/Predictions";
 import { ToastContainer } from "react-toastify";
 import "./index.css";
 
@@ -99,6 +100,7 @@ const App = () => {
           <Route path="profile" element={<AdminProfile />} />
           <Route path="spaces" element={<AdminSpaces />} />
           <Route path="users" element={<AdminUsers />} />
+          <Route path="predictions" element={<AdminPredictions />} />
         </Route>
       </Routes>
 

@@ -2,6 +2,7 @@ import React from "react";
 import { useForm, Controller } from "react-hook-form";
 import AxiosInstance from "../../utils/AxiosInstance";
 import { notifyError, notifySuccess } from "../../utils/helpers";
+import { motion } from "framer-motion"; // Import Framer Motion
 
 const Contact = () => {
   const {
@@ -33,15 +34,26 @@ const Contact = () => {
       notifyError("Something went wrong! Please try again.");
     }
   };
+
   return (
-    <div className="min-h-screen flex items-center justify-center relative overflow-hidden">
+    <motion.div
+      className="min-h-screen flex items-center justify-center relative overflow-hidden my-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
       {/* Decorative Shapes */}
       <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-72 h-72 bg-pink-500 rounded-full opacity-50 z-10"></div>
       <div className="absolute top-1/4 left-1/12 w-96 h-96 bg-yellow-500 rounded-full opacity-30 z-10"></div>
       <div className="absolute bottom-0 right-1/12 w-72 h-76 bg-indigo-500 rounded-full opacity-40 z-10"></div>
 
       {/* Form Container */}
-      <div className="max-w-xl mt-16 w-full p-6 bg-white rounded-lg shadow-lg relative z-10">
+      <motion.div
+        className="max-w-xl mt-16 w-full p-6 bg-white rounded-lg shadow-lg relative z-10"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1 }}
+      >
         <div className="text-center mb-6">
           <h1 className="text-2xl font-semibold text-gray-800">Contact Us</h1>
           <p className="text-gray-600 mt-2 text-sm">
@@ -49,7 +61,12 @@ const Contact = () => {
           </p>
         </div>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col">
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <label className="text-gray-700 mb-1 text-sm">Name</label>
             <Controller
               name="name"
@@ -69,9 +86,14 @@ const Contact = () => {
                 {errors.name.message}
               </p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col">
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          >
             <label className="text-gray-700 mb-1 text-sm">Email</label>
             <Controller
               name="email"
@@ -91,9 +113,14 @@ const Contact = () => {
                 {errors.email.message}
               </p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col">
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             <label className="text-gray-700 mb-1 text-sm">Phone Number</label>
             <Controller
               name="phoneNumber"
@@ -114,9 +141,14 @@ const Contact = () => {
                 {errors.phoneNumber.message}
               </p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col">
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
             <label className="text-gray-700 mb-1 text-sm">Subject</label>
             <Controller
               name="subject"
@@ -136,9 +168,14 @@ const Contact = () => {
                 {errors.subject.message}
               </p>
             )}
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col">
+          <motion.div
+            className="flex flex-col"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
             <label className="text-gray-700 mb-1 text-sm">Message</label>
             <Controller
               name="message"
@@ -157,17 +194,20 @@ const Contact = () => {
                 {errors.message.message}
               </p>
             )}
-          </div>
+          </motion.div>
 
-          <button
+          <motion.button
             type="submit"
             className="w-full py-2 mt-4 border-2 border-purple-500 text-purple-500 font-semibold rounded-md hover:bg-purple-500 hover:text-white transition focus:outline-none"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 0.5 }}
           >
             Send Message
-          </button>
+          </motion.button>
         </form>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

@@ -54,6 +54,14 @@ export const pronounsOptions = [
   { value: "Prefer not to say", label: "Prefer not to say" },
 ];
 
+export const moodColors = {
+  Happy: "#FDC700",
+  Sad: "#51A2FF",
+  Angry: "#FF6467",
+  Neutral: "#99A1AF",
+  Anxious: "#00D5BE",
+};
+
 export const authenticate = (data, next) => {
   if (window !== "undefined") {
     sessionStorage.setItem("token", JSON.stringify(data.token));
@@ -86,9 +94,13 @@ export const logout = (next) => {
   next();
 };
 
+const getToastPosition = () => {
+  return window.innerWidth < 768 ? "top-center" : "bottom-right";
+};
+
 export const notifySuccess = (message) => {
   toast.success(message, {
-    position: "bottom-right",
+    position: getToastPosition(),
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,
@@ -101,7 +113,7 @@ export const notifySuccess = (message) => {
 // Notify error message using Toastify
 export const notifyError = (message) => {
   toast.error(message, {
-    position: "bottom-right",
+    position: getToastPosition(),
     autoClose: 5000,
     hideProgressBar: false,
     closeOnClick: true,

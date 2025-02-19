@@ -6,6 +6,7 @@ import {
   Logout as LogoutIcon,
   Article as ArticleIcon,
   Groups2 as Groups2Icon,
+  SmartToy as SmartToyIcon,
 } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../../../utils/helpers";
@@ -176,6 +177,8 @@ const Sidebar = ({ isMinimized }) => {
             </span>
           </li>
         </Link>
+
+        {/* Communities */}
         <Link to="/admin/communities">
           <li
             className="mt-3 py-2 px-8 text-gray-400 cursor-pointer flex items-center w-full transition-colors duration-300 ease-in-out relative"
@@ -218,6 +221,52 @@ const Sidebar = ({ isMinimized }) => {
               }}
             >
               Communities
+            </span>
+          </li>
+        </Link>
+
+        <Link to="/admin/predictions">
+          <li
+            className="mt-3 py-2 px-8 text-gray-400 cursor-pointer flex items-center w-full transition-colors duration-300 ease-in-out relative"
+            onMouseOver={() => setHovered("predictions")}
+            onMouseOut={() => setHovered(null)}
+            onClick={() => handleItemClick("predictions")}
+            style={{
+              backgroundColor:
+                hovered === "predictions" || selected === "predictions"
+                  ? "#161621"
+                  : "transparent",
+            }}
+          >
+            {selected === "predictions" && (
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-1 h-8 bg-[#D1B1D3]" />
+            )}
+            <div
+              className="mr-5 rounded-md transition-colors duration-300 ease-in-out"
+              style={{ backgroundColor: "#2B3138" }}
+            >
+              <SmartToyIcon
+                style={{
+                  color: "#D1B1D3",
+                  fontSize: "1.7rem",
+                  lineHeight: "1",
+                }}
+                className="p-1"
+              />
+            </div>
+            <span
+              className={`transition-all ease-in-out duration-500 ${
+                isMinimized ? "hidden" : "block"
+              }`}
+              style={{
+                fontSize: "16px",
+                color:
+                  hovered === "predictions" || selected === "predictions"
+                    ? "white"
+                    : "#9ca3af",
+              }}
+            >
+              Predictions
             </span>
           </li>
         </Link>

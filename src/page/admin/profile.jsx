@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 import { EditOutlined } from "@mui/icons-material";
-import {
-  Button,
-  Typography,
-  Grid2,
-  Paper,
-  Avatar,
-  Box,
-  IconButton,
-} from "@mui/material";
+import { Typography, Paper, Avatar, Box, IconButton } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import {
   getUser,
@@ -18,7 +10,7 @@ import {
   setUser,
 } from "../../../utils/helpers";
 import ProfileModal from "../../components/admin/modals/Profile.modal";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
 import ChangePasswordModal from "../../components/admin/modals/ChangePassword.modal";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";

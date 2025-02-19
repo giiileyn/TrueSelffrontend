@@ -12,14 +12,7 @@ import {
   genderIdentityOptions,
   pronounsOptions,
 } from "../../../../utils/helpers";
-import {
-  Box,
-  Typography,
-  TextField,
-  Button,
-  Paper,
-  Grid2,
-} from "@mui/material";
+import { Box, Typography, TextField, Button, Paper } from "@mui/material";
 import AxiosInstance from "../../../../utils/AxiosInstance";
 import dayjs from "dayjs";
 
@@ -104,13 +97,13 @@ const Profile = ({ onClose, user }) => {
         zIndex: 9999,
       }}
     >
-      <Paper elevation={3} sx={{ p: 4, width: "100%", maxWidth: 600 }}>
-        <Typography variant="h5" mb={2}>
+      <Paper elevation={3} className="p-6 w-full max-w-lg">
+        <Typography variant="h5" className="mb-4 font-semibold">
           Update Profile
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid2 container spacing={2}>
-            <Grid2 item xs={12}>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
               <TextField
                 label="Name"
                 fullWidth
@@ -119,8 +112,9 @@ const Profile = ({ onClose, user }) => {
                 helperText={errors.name?.message}
                 {...register("name", { required: "Name is required" })}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </div>
+
+            <div>
               <Controller
                 name="dob"
                 rules={{ required: "Date of Birth is required" }}
@@ -142,8 +136,9 @@ const Profile = ({ onClose, user }) => {
                   </LocalizationProvider>
                 )}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </div>
+
+            <div>
               <TextField
                 label="Email"
                 fullWidth
@@ -152,11 +147,12 @@ const Profile = ({ onClose, user }) => {
                 helperText={errors.email?.message}
                 {...register("email", { required: "Email is required" })}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
+            </div>
+
+            <div>
               <TextField
                 label="Phone Number"
-                style={{ width: "260px" }}
+                fullWidth
                 variant="outlined"
                 error={!!errors.phoneNumber}
                 helperText={errors.phoneNumber?.message}
@@ -168,9 +164,10 @@ const Profile = ({ onClose, user }) => {
                   },
                 })}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
+            </div>
+
+            <div>
+              <Typography variant="subtitle1" className="mb-1">
                 Sexual Orientation
               </Typography>
               <Controller
@@ -184,10 +181,10 @@ const Profile = ({ onClose, user }) => {
                   />
                 )}
               />
-            </Grid2>
+            </div>
 
-            <Grid2 item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
+            <div>
+              <Typography variant="subtitle1" className="mb-1">
                 Gender Identity
               </Typography>
               <Controller
@@ -201,9 +198,10 @@ const Profile = ({ onClose, user }) => {
                   />
                 )}
               />
-            </Grid2>
-            <Grid2 item xs={12}>
-              <Typography variant="subtitle1" gutterBottom>
+            </div>
+
+            <div>
+              <Typography variant="subtitle1" className="mb-1">
                 Pronouns
               </Typography>
               <Controller
@@ -217,16 +215,17 @@ const Profile = ({ onClose, user }) => {
                   />
                 )}
               />
-            </Grid2>
-            <Grid2 item xs={12} display="flex" justifyContent="flex-end">
-              <Button onClick={onClose} variant="outlined" sx={{ mr: 2 }}>
-                Cancel
-              </Button>
-              <Button type="submit" variant="contained">
-                Update
-              </Button>
-            </Grid2>
-          </Grid2>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-3 mt-4">
+            <Button onClick={onClose} variant="outlined" color="secondary">
+              Cancel
+            </Button>
+            <Button type="submit" variant="contained">
+              Update
+            </Button>
+          </div>
         </form>
       </Paper>
     </Box>

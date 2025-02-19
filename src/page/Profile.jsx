@@ -12,7 +12,8 @@ import ChangePasswordModal from "../components/user/modals/ChangePassword";
 import ProfileModal from "../components/user/modals/Profile";
 import { IconButton } from "@mui/material";
 import { Facebook, Google } from "@mui/icons-material";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import { CameraAlt as CameraAltIcon } from "@mui/icons-material";
+
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import AxiosInstance from "../../utils/AxiosInstance";

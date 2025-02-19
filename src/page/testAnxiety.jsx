@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
+import Axios from "axios";
 import AxiosAIInstance from "../../utils/AxiosAIInstance";
-import AxiosInstance from "../../utils/AxiosInstance";
 import { getUser, getAge } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+const API_KEY = "sk_857c2037241508de1a5690663df2171009e2662d14e06844";
+const VOICE_ID = "Xb7hH8MSUJpSbSDYk0k2";
 
 const jobOptions = [
   { value: "student", label: "Student" },
@@ -20,66 +22,241 @@ const yesNoOptions = [
   { value: 0, label: "No" },
 ];
 
+const scale1to5Options = [
+  { value: 1, label: "1" },
+  { value: 2, label: "2" },
+  { value: 3, label: "3" },
+  { value: 4, label: "4" },
+  { value: 5, label: "5" },
+];
+
+const scale1to10Options = Array.from({ length: 10 }, (_, i) => ({
+  value: i + 1,
+  label: (i + 1).toString(),
+}));
+
+const questions = [
+  {
+    key: "jobRole",
+    label: "1. What's your occupation?",
+    type: "select",
+    options: jobOptions,
+  },
+  {
+    key: "sleepDuration",
+    label: "2. How many hours do you sleep per day?",
+    type: "number",
+  },
+  {
+    key: "exerciseMinutes",
+    label: "3. How many minutes do you exercise per week?",
+    type: "number",
+  },
+  {
+    key: "caffeineIntake",
+    label: "4. What is your daily caffeine intake (milligram)?",
+    type: "number",
+  },
+  {
+    key: "alcoholIntake",
+    label: "5. How many alcoholic drinks do you consume per week?",
+    type: "number",
+  },
+  {
+    key: "heartRateAnxiety",
+    label: "6. Typical heart rate during anxiety attack? (beats per minute)",
+    type: "number",
+  },
+  {
+    key: "breathingRate",
+    label:
+      "7. Breathing rate during anxiety attack? (Breaths per Minute - BPM)",
+    type: "number",
+  },
+  {
+    key: "sweatingSeverity",
+    label:
+      "8. On a scale of 1 to 5, how severe is sweating during an anxiety attack? (Subjective scale)",
+    type: "select",
+    options: scale1to5Options,
+  },
+  {
+    key: "therapySessions",
+    label: "9. Therapy sessions per month? (Sessions/Month)",
+    type: "number",
+  },
+  {
+    key: "smoking",
+    label: "10. Do you currently smoke? (Yes or No)",
+    type: "select",
+    options: yesNoOptions,
+  },
+  {
+    key: "familyAnxiety",
+    label: "11. Family history of anxiety disorders? (Yes or No)",
+    type: "select",
+    options: yesNoOptions,
+  },
+  {
+    key: "dizziness",
+    label: "12. Do you experience dizziness during anxiety attacks?",
+    type: "select",
+    options: yesNoOptions,
+  },
+  {
+    key: "medication",
+    label: "13. Are you taking any medication for anxiety?",
+    type: "select",
+    options: yesNoOptions,
+  },
+  {
+    key: "lifeEvents",
+    label: "14. Have you experienced any major life events recently?",
+    type: "select",
+    options: yesNoOptions,
+  },
+  {
+    key: "dietQuality",
+    label: "15. On a scale of 1 to 10, how would you rate your overall diet?",
+    type: "select",
+    options: scale1to10Options,
+  },
+  {
+    key: "stressLevel",
+    label:
+      "16. On a scale of 1 to 10, how would you rate your current stress level?",
+    type: "select",
+    options: scale1to10Options,
+  },
+];
+
 const TestAnxiety = () => {
   const {
     register,
     handleSubmit,
     control,
+    setValue,
+    reset,
     formState: { errors },
   } = useForm();
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [answers, setAnswers] = useState({});
+  const [audioPlayed, setAudioPlayed] = useState(false);
+  const currentQuestion = questions[currentQuestionIndex];
+  const [progress, setProgress] = useState(0);
   const user = getUser();
+  const audioRef = useRef(null);
   const navigate = useNavigate();
-
-  const onSubmit = (data) => {
-    const userId = user._id;
-    const occupationOptions = [
-      "Engineer",
-      "Other",
-      "Student",
-      "Teacher",
-      "Unemployed",
-    ];
-
-    let occupationEncoding = {
-      Occupation_Engineer: 0,
-      Occupation_Other: 0,
-      Occupation_Student: 0,
-      Occupation_Teacher: 0,
-      Occupation_Unemployed: 0,
-    };
-
-    const selectedOccupation = data.jobRole.value; // Assuming occupation is stored as { value: "student" }
-    if (selectedOccupation) {
-      const formattedOccupation = `Occupation_${
-        selectedOccupation.charAt(0).toUpperCase() + selectedOccupation.slice(1)
-      }`;
-      if (occupationEncoding.hasOwnProperty(formattedOccupation)) {
-        occupationEncoding[formattedOccupation] = 1;
+  const speakQuestion = async (text) => {
+    try {
+      if (audioRef.current) {
+        audioRef.current.pause(); // Stop previous audio
+        audioRef.current.currentTime = 0; // Reset playback position
       }
+
+      const response = await Axios.post(
+        `https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,
+        {
+          text,
+          voice_settings: { stability: 0.5, similarity_boost: 0.5 },
+        },
+        {
+          headers: {
+            "xi-api-key": API_KEY,
+            "Content-Type": "application/json",
+          },
+          responseType: "arraybuffer",
+        }
+      );
+
+      const audioBlob = new Blob([response.data], { type: "audio/mpeg" });
+      const audioURL = URL.createObjectURL(audioBlob);
+      const audio = new Audio(audioURL);
+      audioRef.current = audio; // Store new audio in ref
+
+      const playAudio = () => {
+        audio.play();
+        setAudioPlayed(true);
+      };
+
+      if (!audioPlayed) {
+        document.body.addEventListener("click", playAudio, { once: true });
+      } else {
+        playAudio();
+      }
+    } catch (error) {
+      console.error("TTS error:", error);
     }
-    const dob = user.dob;
+  };
 
-    const cleanedData = {
-      Age: getAge(dob),
-      "Sleep Hours": data.sleepDuration,
-      "Physical Activity (hrs/week)": data.exerciseMinutes,
-      "Caffeine Intake (mg/day)": data.caffeineIntake,
-      "Alcohol Consumption (drinks/week)": data.alcoholIntake,
-      Smoking: data.smoking.value,
-      "Family History of Anxiety": data.familyAnxiety.value,
-      "Stress Level (1-10)": data.stressLevel, // Ensure this is captured from form
-      "Heart Rate (bpm during attack)": data.heartRateAnxiety,
-      "Breathing Rate (breaths/min)": data.breathingRate,
-      "Sweating Level (1-5)": data.sweatingSeverity,
-      Dizziness: data.dizziness.value,
-      Medication: data.medication.value,
-      "Therapy Sessions (per month)": data.therapySessions,
-      "Recent Major Life Event": data.lifeEvents.value,
-      "Diet Quality (1-10)": data.dietQuality,
-      ...occupationEncoding, // Spread the one-hot encoded occupation fields
-    };
+  useEffect(() => {
+    if (currentQuestion) {
+      speakQuestion(currentQuestion.label);
+      setProgress(((currentQuestionIndex + 1) / questions.length) * 100);
+    }
+  }, [currentQuestionIndex]);
 
-    AxiosAIInstance.post(`/predict/${userId}`, cleanedData).then((response) => {
+  const handleNext = (data) => {
+    setAnswers({
+      ...answers,
+      [currentQuestion.key]: data[currentQuestion.key],
+    });
+    setValue(currentQuestion.key, "");
+
+    if (currentQuestionIndex < questions.length - 1) {
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
+    } else {
+      console.log(answers);
+
+      let occupationEncoding = {
+        Occupation_Engineer: 0,
+        Occupation_Other: 0,
+        Occupation_Student: 0,
+        Occupation_Teacher: 0,
+        Occupation_Unemployed: 0,
+      };
+
+      const selectedOccupation = data.jobRole.value;
+      if (selectedOccupation) {
+        const formattedOccupation = `Occupation_${
+          selectedOccupation.charAt(0).toUpperCase() +
+          selectedOccupation.slice(1)
+        }`;
+        if (occupationEncoding.hasOwnProperty(formattedOccupation)) {
+          occupationEncoding[formattedOccupation] = 1;
+        }
+      }
+
+      const dob = user.dob;
+
+      const cleanedData = {
+        Age: getAge(dob),
+        "Sleep Hours": answers.sleepDuration,
+        "Physical Activity (hrs/week)": answers.exerciseMinutes,
+        "Caffeine Intake (mg/day)": answers.caffeineIntake,
+        "Alcohol Consumption (drinks/week)": answers.alcoholIntake,
+        Smoking: answers.smoking.value,
+        "Family History of Anxiety": answers.familyAnxiety.value,
+        "Stress Level (1-10)": answers.stressLevel.value,
+        "Heart Rate (bpm during attack)": answers.heartRateAnxiety,
+        "Breathing Rate (breaths/min)": answers.breathingRate,
+        "Sweating Level (1-5)": answers.sweatingSeverity.value,
+        Dizziness: answers.dizziness.value,
+        Medication: answers.medication.value,
+        "Therapy Sessions (per month)": answers.therapySessions,
+        "Recent Major Life Event": answers.lifeEvents.value,
+        "Diet Quality (1-10)": answers.dietQuality.value,
+        ...occupationEncoding,
+      };
+
+      console.log(cleanedData);
+      submitData(cleanedData);
+    }
+  };
+
+  const submitData = async (data) => {
+    const userId = user._id;
+    await AxiosAIInstance.post(`/predict/${userId}`, data).then((response) => {
       console.log(response.data);
       const severity = Math.round(response.data.predicted_severity);
       if (severity > 5) {
@@ -106,244 +283,74 @@ const TestAnxiety = () => {
       }
     });
   };
-
   return (
-    <div className="flex justify-center items-center min-h-screen mt-14 bg-gray-100 p-6">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-100 to-white p-6">
       <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-lg rounded-lg p-8 w-full max-w-4xl"
+        onSubmit={handleSubmit(handleNext)}
+        className="bg-white shadow-2xl rounded-2xl p-10 w-full max-w-xl transition-all duration-300 hover:shadow-lg"
       >
-        <h2 className="text-2xl font-bold text-center mb-6">
-          AI Prediction Anxiety Level
+        <progress
+          className="w-full h-2 bg-gray-200 rounded-full overflow-hidden"
+          value={progress}
+          max="100"
+        ></progress>
+        {/* Title */}
+        <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+          AI Anxiety Test
         </h2>
 
-        {/* Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-          {/* Job Role */}
-          <div className="flex flex-col">
-            <label htmlFor="jobRole" className="font-medium text-gray-700">
-              1. What's your occupation?
-            </label>
-            <Controller
-              name="jobRole"
-              control={control}
-              rules={{ required: "This is required" }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  inputId="jobRole"
-                  options={jobOptions}
-                  className="mt-1"
-                  placeholder="Select an occupation"
-                  aria-describedby="jobRole-error"
-                />
-              )}
-            />
-            {errors.jobRole && (
-              <p className="text-red-500 text-sm" id="jobRole-error">
-                {errors.jobRole.message}
-              </p>
-            )}
-          </div>
+        {/* Question Field */}
+        <div className="flex flex-col mb-4">
+          <label className="text-lg font-semibold text-gray-700 mb-2">
+            {currentQuestion.label}
+          </label>
 
-          {/* Average Sleep Duration */}
-          <div className="flex flex-col">
-            <label className="font-medium text-gray-700">
-              2. Average daily sleep duration (hours, 0-24)
-            </label>
-            <input
-              type="number"
-              placeholder="Enter a number between 0 and 24"
-              step={0.1}
-              {...register("sleepDuration", {
-                required: "This field is required",
-                min: {
-                  value: 0,
-                  message: "The value must be at least 0",
-                },
-                max: {
-                  value: 24,
-                  message: "The value must be at most 24",
-                },
-              })}
-              className="border rounded px-3 py-2 mt-1"
-              aria-describedby="sleepDurationError"
-            />
-            {errors.sleepDuration && (
-              <p className="text-red-500 text-sm" id="sleepDurationError">
-                {errors.sleepDuration.message}
-              </p>
-            )}
-          </div>
-
-          {/* Other Inputs */}
-          {[
-            {
-              label: "3. How many minutes of physical exercise per day?",
-              name: "exerciseMinutes",
-            },
-            {
-              label: "4. Daily caffeine intake (milligrams)?",
-              name: "caffeineIntake",
-            },
-            {
-              label: "5. How many alcoholic drinks do you consume per week?",
-              name: "alcoholIntake",
-            },
-            {
-              label:
-                "6. Typical heart rate during anxiety attack? (beats per minute)",
-              name: "heartRateAnxiety",
-            },
-            {
-              label:
-                "7. Breathing rate during anxiety attack? (Breaths per Minute - BPM)",
-              name: "breathingRate",
-            },
-            {
-              label:
-                "8. On a scale of 1 to 5, how severe is sweating during an anxiety attack? (Subjective scale)",
-              name: "sweatingSeverity",
-            },
-            {
-              label: "9. Therapy sessions per month? (Sessions/Month)",
-              name: "therapySessions",
-            },
-          ].map((field, index) => (
-            <div key={index} className="flex flex-col">
-              <label className="font-medium text-gray-700">{field.label}</label>
-              <input
-                type="text"
-                {...register(field.name, {
-                  required: "This field is required",
-                })}
-                className="border rounded px-3 py-2 mt-1"
-              />
-              {errors[field.name] && (
-                <p className="text-red-500 text-sm">
-                  {errors[field.name]?.message}
-                </p>
-              )}
-            </div>
-          ))}
-
-          {/* Yes/No Questions as React Select Dropdowns */}
-          {[
-            { label: "10. Do you currently smoke?", name: "smoking" },
-            {
-              label: "11. Family history of anxiety disorders?",
-              name: "familyAnxiety",
-            },
-            {
-              label: "12. Do you experience dizziness during anxiety attacks?",
-              name: "dizziness",
-            },
-            {
-              label: "13. Are you taking any medication for anxiety?",
-              name: "medication",
-            },
-            {
-              label: "14. Have you experienced any major life events recently?",
-              name: "lifeEvents",
-            },
-          ].map((field, index) => (
-            <div key={index} className="flex flex-col">
-              <label htmlFor={field.name} className="font-medium text-gray-700">
-                {field.label}
-              </label>
+          {/* Select Field */}
+          {currentQuestion.type === "select" ? (
+            <div>
               <Controller
-                name={field.name}
-                control={control}
+                name={currentQuestion.key}
                 rules={{ required: "This field is required" }}
+                control={control}
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={yesNoOptions}
-                    inputId={field.name}
+                    options={currentQuestion.options}
                     className="mt-1"
                   />
                 )}
               />
-              {errors[field.name] && (
-                <p className="text-red-500 text-sm" aria-live="assertive">
-                  {errors[field.name]?.message}
+              {errors[currentQuestion.key] && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors[currentQuestion.key].message}
                 </p>
               )}
             </div>
-          ))}
-
-          {/* Diet Quality and Stress Level in one row on larger screens */}
-          <div className="md:col-span-2 flex flex-col md:flex-row space-y-4 md:space-x-4">
-            {/* Diet Quality */}
-            <div className="flex flex-col w-full md:w-1/2">
-              <label className="font-medium text-gray-700">
-                15. On a scale of 1 to 10, how would you rate your overall diet
-                quality?
-              </label>
+          ) : (
+            // Input Field
+            <div>
               <input
-                type="number"
-                {...register("dietQuality", {
+                type={currentQuestion.type}
+                {...register(currentQuestion.key, {
                   required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "The value must be at least 1",
-                  },
-                  max: {
-                    value: 10,
-                    message: "The value must be at most 10",
-                  },
                 })}
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-                className="border rounded px-3 py-2 mt-1"
+                className="border border-gray-300 rounded-lg px-4 py-3 mt-1 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
               />
-              {errors.dietQuality && (
-                <p className="text-red-500 text-sm">
-                  {errors.dietQuality.message}
+              {errors[currentQuestion.key] && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors[currentQuestion.key].message}
                 </p>
               )}
             </div>
-
-            {/* Stress Level */}
-            <div className="flex flex-col w-full md:w-1/2">
-              <label className="font-medium text-gray-700">
-                16. On a scale of 1 to 10, how would you rate your current
-                stress level?
-              </label>
-              <input
-                type="number"
-                className="border rounded px-3 py-2 mt-1"
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-                {...register("stressLevel", {
-                  required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "The value must be at least 1",
-                  },
-                  max: {
-                    value: 10,
-                    message: "The value must be at most 10",
-                  },
-                })}
-              />
-              {errors.stressLevel && (
-                <p className="text-red-500 text-sm">
-                  {errors.stressLevel.message}
-                </p>
-              )}
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Submit Button */}
+        {/* Next Button */}
         <button
           type="submit"
-          className="w-full bg-purple-500 text-white py-3 rounded mt-6 hover:bg-purple-600 transition"
+          className="w-full bg-purple-600 text-white py-3 rounded-lg mt-6 text-lg font-semibold hover:bg-purple-700 transition-all duration-200"
         >
-          Submit
+          {currentQuestionIndex === questions.length - 1 ? "Submit" : "Next"}
         </button>
       </form>
     </div>

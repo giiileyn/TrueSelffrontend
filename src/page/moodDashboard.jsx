@@ -1,156 +1,111 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import Calendar from "../components/user/Calendar";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  LineChart,
-  Line,
-  ResponsiveContainer,
-} from "recharts";
-import AxiosInstance from "../../utils/AxiosInstance";
-import { getUser, notifyError } from "../../utils/helpers";
-
-const moodColors = {
-  Happy: "#FF6467",
-  Sad: "#51A2FF",
-  Angry: "#FFA2A2",
-  Neutral: "#99A1AF",
-  Anxious: "#00D5BE",
-};
+import { getUser } from "../../utils/helpers";
+import PieChart from "../components/user/charts/PieChart";
+import MoodLineChart from "../components/user/charts/LineCharts";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
+import StopCircleIcon from "@mui/icons-material/StopCircle";
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
+import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 const MoodDashboard = () => {
-  const [moodPerMonth, setMoodPerMonth] = useState([]);
-  const [moodPercentage, setMoodPercentage] = useState([
-    { mood: "Happy", percentage: 0 },
-    { mood: "Sad", percentage: 0 },
-    { mood: "Angry", percentage: 0 },
-    { mood: "Anxious", percentage: 0 },
-    { mood: "Neutral", percentage: 0 },
-  ]);
-
   const user = getUser();
   const userId = user._id;
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
 
-  const fetchMoodPerMonth = async () => {
-    try {
-      const res = await AxiosInstance.get(
-        `/moodEntries/moodPerMonth/${userId}`
-      );
-      if (res.data.success) {
-        const formattedData = res.data.moodsPerMonth.map((entry) => {
-          const monthName = new Date(
-            entry._id.year,
-            entry._id.month - 1
-          ).toLocaleString("default", { month: "short" });
-          const moodCounts = { month: monthName };
-
-          ["Happy", "Sad", "Angry", "Neutral", "Anxious"].forEach((mood) => {
-            const moodEntry = entry.moods.find((m) => m.mood === mood);
-            moodCounts[mood] = moodEntry ? moodEntry.count : 0;
-          });
-
-          return moodCounts;
-        });
-
-        setMoodPerMonth(formattedData);
-      }
-    } catch (error) {
-      console.error(error);
-      notifyError("Failed to fetch mood data");
+  const toggleMusic = () => {
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
     }
+    setIsPlaying(!isPlaying);
   };
-
-  const fetchMoodPercentage = async () => {
-    try {
-      const res = await AxiosInstance.get(
-        `/moodEntries/moodPercentages/${userId}`
-      );
-      setMoodPercentage(res.data.moodPercentages);
-    } catch (error) {
-      console.log(error);
-      notifyError("Failed to fetch mood percentage data");
-    }
-  };
-
-  useEffect(() => {
-    fetchMoodPerMonth();
-    fetchMoodPercentage();
-  }, []);
 
   return (
-    <div className="my-10 px-4 md:px-16">
-      <div className="flex justify-center items-center text-center">
-        <h1 className="font-semibold font-serif text-xl md:text-2xl ">
+    <div className="my-10 px-6 md:px-20 lg:px-32">
+      {/* Page Title */}
+      <div className="text-center">
+        <h1 className="font-serif font-bold text-2xl md:text-3xl">
           Mood Tracker Dashboard
         </h1>
+        <p className="text-gray-600 mt-2 text-sm md:text-base">
+          Reflect, relax, and gain insights into your emotional well-being.
+        </p>
       </div>
 
-      <Calendar />
-      <div className="flex flex-col md:flex-row justify-between items-center mt-8 w-full gap-5">
+      {/* Calendar & Music Player + CTA Section */}
+      <div className="flex flex-col md:flex-row mt-8 gap-8">
+        {/* Calendar Section */}
+        <div className="w-full md:w-1/2">
+          <Calendar />
+        </div>
+
+        {/* Music Player & CTA Section */}
+        <div className="w-full md:w-[400px] lg:w-[500px] xl:w-[600px] bg-gradient-to-r from-blue-500 to-purple-600 p-8 rounded-2xl text-white shadow-lg">
+          <h2 className="text-xl md:text-2xl font-bold mb-3 flex items-center gap-2">
+            <MusicNoteIcon className="text-white" />
+            Relaxing Music 🎵
+          </h2>
+          <p className="text-sm md:text-base mb-5 italic">
+            "Music is the medicine of the mind." – John A. Logan
+          </p>
+          <p className="text-sm md:text-base mb-4">
+            Take a deep breath and enjoy some calming music to ease your mind.
+            Listening to music can help reduce stress, improve focus, and
+            enhance your mood.
+          </p>
+
+          <ul className="list-disc list-inside text-sm md:text-base mb-6">
+            <li>Relieves stress and anxiety</li>
+            <li>Boosts concentration</li>
+            <li>Enhances emotional well-being</li>
+          </ul>
+
+          {/* Play Music Button */}
+          <div className="flex items-center gap-4 mb-6">
+            <button
+              onClick={toggleMusic}
+              className="flex items-center gap-2 bg-white text-blue-600 px-5 py-3 rounded-xl font-semibold shadow-md hover:bg-gray-100 transition"
+            >
+              {isPlaying ? <StopCircleIcon /> : <PlayCircleIcon />}
+              {isPlaying ? "Stop Music" : "Play Music"}
+            </button>
+            <audio ref={audioRef} src="/path-to-your-music.mp3" loop />
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+            <button className="flex items-center gap-2 bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:bg-blue-800 transition">
+              <SentimentSatisfiedAltIcon />
+              Record Mood
+            </button>
+            <button className="flex items-center gap-2 bg-purple-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md hover:bg-purple-800 transition">
+              <EditNoteIcon />
+              Write Journal
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Charts Section */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
         {/* Line Chart - Monthly Mood */}
-        <div className="w-full md:w-1/2 bg-white shadow-md p-4 rounded-lg">
-          <h1 className="font-serif font-semibold text-lg md:text-xl mb-4">
-            Monthly Mood Chart
-          </h1>
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={moodPerMonth}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              {Object.keys(moodColors).map((mood) => (
-                <Line
-                  key={mood}
-                  type="monotone"
-                  dataKey={mood}
-                  stroke={moodColors[mood]}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
+        <div className="bg-white shadow-lg p-6 rounded-xl">
+          <h2 className="font-serif font-semibold text-lg md:text-xl mb-4">
+            Monthly Mood Trend
+          </h2>
+          <MoodLineChart />
         </div>
 
         {/* Pie Chart - Mood Distribution */}
-        <div className="w-full md:w-1/2 bg-white shadow-md p-4 rounded-lg">
-          <h1 className="font-serif font-semibold text-lg md:text-xl mb-4">
-            Mood Distribution
-          </h1>
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={moodPercentage.map(({ mood, percentage }) => ({
-                  name: mood,
-                  value: percentage,
-                }))}
-                cx="50%"
-                cy="50%"
-                innerRadius={50}
-                outerRadius={100}
-                paddingAngle={5}
-                dataKey="value"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-              >
-                {moodPercentage.map(({ mood }, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={moodColors[mood] || "#add8e6"}
-                  />
-                ))}
-              </Pie>
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+        <div className="bg-white shadow-lg p-6 rounded-xl">
+          <h2 className="font-serif font-semibold text-lg md:text-xl mb-4">
+            Mood Distribution Overview
+          </h2>
+          <PieChart />
         </div>
       </div>
     </div>

@@ -89,11 +89,11 @@ const ComPage = () => {
       <main className="main-content">
         <div className="top-section">
           <div className="card">
-            <img src="/page/community.png" alt="Community" />
+            <img src="/page/community1.png" alt="Community" />
             <p>Lorem ipsum dolor sit amet...</p>
           </div>
           <div className="card">
-            <img src="/page/community.png" alt="Community" />
+            <img src="/page/community2.png" alt="Community" />
             <p>Lorem ipsum dolor sit amet...</p>
           </div>
         </div>
@@ -126,7 +126,7 @@ const ComPage = () => {
      
   <div className="right-sidebar">
   <div className="card1">
-    <img src="/page/community.png" alt="Community" />
+    <img src="/page/community3.png" alt="Community" />
     <p>Lorem ipsum dolor sit amet...</p>
   </div>
 

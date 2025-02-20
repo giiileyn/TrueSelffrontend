@@ -9,8 +9,8 @@ import Help from "./page/Help";
 import Contact from "./page/Contact";
 import Aboutus from "./page/Aboutus";
 import ComPage from "./page/ComPage";
+import Authors from "./page/Authors";
 import Desk1 from "./page/Desk1";
-import Calendar from "./page/Calendar";
 import MoodIndex from "./page/moodIndex";
 import Sphere from "./components/user/sphere";
 import MoodEntry from "./page/moodEntry";
@@ -44,7 +44,7 @@ const App = () => {
           <Route path="/about" element={<Aboutus />} />
           <Route path="/community" element={<ComPage />} />
           <Route path="/desk1" element={<Desk1 />} />
-          <Route path="/calendar" element={<Calendar />} />
+          <Route path="/author" element={<Authors />} />
           <Route path="/mood" element={<MoodIndex />} />
           <Route path="/mood-dashboard" element={<MoodDashboard />} />
           <Route path="/profile" element={<Profile />} />

@@ -119,8 +119,9 @@
   
   .card {
     flex: 1;
-    min-width: 200px;
-    min-height: 250px; 
+    min-width: 250px; /* Reduce min-width */
+    max-width: 380px; /* Limit max-width */
+    min-height: 200px; /* Reduce min-height */
     background: white;
     border-radius: 8px;
     padding: 10px;
@@ -131,10 +132,10 @@
   }
 
   .card img {
-    width: 100%;
-    height: 100%;
+    width: 100%; /* Ensure the image fits the card */
+    height: auto; /* Maintain aspect ratio */
     border-radius: 8px;
-  }
+}
   
   /* .main-content {
     width: 100%; 
@@ -220,8 +221,9 @@
   
   .card1 {
     flex: 1;
-    min-width: 200px;
-    min-height: 250px; 
+    min-width: 250px; /* Reduce min-width */
+    max-width: 380px; /* Limit max-width */
+    min-height: 200px; /* Reduce min-height */
     background: white;
     border-radius: 8px;
     padding: 10px;
@@ -230,11 +232,16 @@
    
   }
   
-  .card1 img {
-    width: 100%;
-    height: 100%;
+  .card, .card1 {
+    display: flex;
+    flex-direction: column;
+}
+
+.card1 img {
+    width: 100%; /* Ensure the image fits the card */
+    height: auto; /* Maintain aspect ratio */
     border-radius: 8px;
-  }
+}
   
   .popular-communities {
     background: white;

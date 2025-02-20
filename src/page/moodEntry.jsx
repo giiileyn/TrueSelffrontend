@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import AxiosInstance from "../../utils/AxiosInstance";
-import { getUser, notifyError, notifySuccess } from "../../utils/helpers";
+import { getUser, notifyError } from "../../utils/helpers";
 
 const moodData = [
   {
@@ -122,7 +122,6 @@ const MoodEntry = () => {
           note: result.value,
         };
 
-        // Save mood data to the database
         await AxiosInstance.post(`/moodEntries/${userId}`, data)
           .then((res) => {
             if (res.status === 201) {

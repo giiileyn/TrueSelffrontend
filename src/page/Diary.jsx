@@ -10,16 +10,24 @@ import {
   Select,
   FormControl,
   InputLabel,
+  ToggleButton,
+  ToggleButtonGroup,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { getUser, notifyError, notifySuccess } from "../../utils/helpers";
+import {
+  getUser,
+  notifyError,
+  notifySuccess,
+  getPreviewHtml,
+} from "../../utils/helpers";
 import { useForm } from "react-hook-form";
 import { modules } from "../../configs/ReactQuill.config";
 import AxiosInstance from "../../utils/AxiosInstance";
-import JournalCard from "../components/user/JournalEntryCard";
 import Swal from "sweetalert2";
+import { Edit, Delete, TableChart, ViewModule } from "@mui/icons-material";
+import JournalModal from "../components/user/modals/JournalModal";
 
 const images = [
   "/page/journal/1.jpg",
@@ -34,79 +42,6 @@ const images = [
   "/page/journal/10.jpg",
 ];
 
-const moodData = [
-  {
-    id: 1,
-    name: "Neutral",
-    color: "bg-gray-400",
-    icon: "/moods/neutral.png",
-    suggestions: [
-      "Enjoy the present moment and take a deep breath.",
-      "Take some time to relax, maybe listen to calming music.",
-      "Engage in a simple, calming activity like stretching or journaling.",
-      "Reflect on things you're grateful for or things you've accomplished.",
-      "Embrace the peace, focus on being in the here and now.",
-      "Spend some time outdoors to recharge your energy.",
-    ],
-  },
-  {
-    id: 2,
-    name: "Happy",
-    color: "bg-yellow-400",
-    icon: "/moods/smiley.png",
-    suggestions: [
-      "Keep spreading positivity!",
-      "Celebrate small wins.",
-      "Share your happiness with others.",
-      "Take a moment to enjoy the good things in life.",
-      "Practice gratitude to amplify your joy.",
-      "Keep that smile going, it brightens up the world!",
-    ],
-  },
-  {
-    id: 3,
-    name: "Anxious",
-    color: "bg-teal-400",
-    icon: "/moods/anxious.png",
-    suggestions: [
-      "Channel your energy into something creative!",
-      "Celebrate your excitement with others!",
-      "Make a plan to accomplish something you've been wanting to do.",
-      "Use your excitement to motivate you to reach your goals.",
-      "Find ways to keep your enthusiasm going.",
-      "Share your excitement with friends or family!",
-    ],
-  },
-  {
-    id: 4,
-    name: "Sad",
-    color: "bg-blue-400",
-    icon: "/moods/sad.png",
-    suggestions: [
-      "Take some time for self-care.",
-      "Talk to someone you trust about your feelings.",
-      "Journaling can help process your emotions.",
-      "Do something that relaxes you, like reading or walking.",
-      "Consider watching something that makes you laugh.",
-      "Practice mindfulness or meditation to find peace.",
-    ],
-  },
-  {
-    id: 5,
-    name: "Angry",
-    color: "bg-red-400",
-    icon: "/moods/angry.png",
-    suggestions: [
-      "Try some deep breathing exercises.",
-      "Take a walk to cool off and reset.",
-      "Reflect on what triggered your anger and how to address it.",
-      "Practice mindfulness or meditation to calm your mind.",
-      "Write down your feelings as a form of release.",
-      "Engage in a physical activity to release tension.",
-    ],
-  },
-];
-
 const Diary = () => {
   const [time, setTime] = useState(new Date());
   const [open, setOpen] = useState(false);
@@ -115,12 +50,16 @@ const Diary = () => {
     sessionStorage.getItem("selectedImage") || images[0]
   );
   const [journalEntries, setJournalEntries] = useState([]);
-
+  const [visibleJournalEntries, setVisibleJournalEntries] = useState(6);
+  const [viewMode, setViewMode] = useState("card");
   const user = getUser();
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: { title: "", journalEntry: "" },
   });
   const journalEntry = watch("journalEntry");
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedJournalEntry, setSelectedJournalEntry] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -173,6 +112,7 @@ const Diary = () => {
       }
     );
   };
+
   const handleDelete = async (id) => {
     console.log("Delete journal entry with id:", id);
     const result = await Swal.fire({
@@ -220,11 +160,48 @@ const Diary = () => {
     getAllJournalEntry();
   }, []);
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  const handleOpenModal = (journalEntry) => {
+    setIsModalOpen(true);
+    setIsEditing(true);
+    setSelectedJournalEntry(journalEntry);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setIsEditing(false);
+    setSelectedJournalEntry(null);
+  };
+
   return (
     <div className="my-10">
-      <div className="flex justify-center items-center">
-        <h1 className="font-semibold text-3xl">Digital Journal</h1>
+      <div className="flex justify-center items-center flex-col my-6 text-center">
+        <h1 className="font-bold text-4xl text-lilac">Digital Journal</h1>
+        <p className="mt-2 text-lg text-gray-700 max-w-md">
+          Your story matters. Express yourself freely and embrace your true self
+          in a safe space.
+        </p>
       </div>
+
+      {isModalOpen && (
+        <Box position="fixed" top="0" left="0" right="0" bottom="" zIndex="50">
+          <JournalModal
+            journal={selectedJournalEntry}
+            onClose={onclose}
+            fetchJournals={getAllJournalEntry}
+          />
+        </Box>
+      )}
 
       <div className="flex flex-col md:flex-row items-center justify-center gap-12 my-10">
         <div className="relative">
@@ -297,28 +274,119 @@ const Diary = () => {
       </div>
 
       {/* List of journals */}
-      <div className="my-5">
-        <h3 className="text-lg font-semibold">Journal Entries</h3>
-        <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {journalEntries.map((entry) => (
-            <JournalCard
-              key={entry._id}
-              id={entry._id}
-              title={entry.title}
-              content={entry.content} // HTML content from ReactQuill
-              createdAt={entry.createdAt}
-              handleDelete={handleDelete}
-            />
-          ))}
+      <div className="my-5 p-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="font-serif font-semibold text-lg md:text-xl">
+            Recent Mood Entries
+          </h2>
+          <ToggleButtonGroup
+            value={viewMode}
+            exclusive
+            onChange={(e, newView) => newView && setViewMode(newView)}
+            size="small"
+          >
+            <ToggleButton value="card">
+              <ViewModule fontSize="small" />
+            </ToggleButton>
+            <ToggleButton value="table">
+              <TableChart fontSize="small" />
+            </ToggleButton>
+          </ToggleButtonGroup>
         </div>
+        <button className="border-2 my-5 border-[#C8A2C8] text-[#C8A2C8] px-4 py-2 rounded-lg hover:bg-[#C8A2C8] hover:text-white transition">
+          Add Entry
+        </button>
+
+        {journalEntries.length > 0 ? (
+          <>
+            {viewMode === "card" ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {journalEntries.slice(0, visibleJournalEntries).map((entry) => (
+                  <div
+                    key={entry._id}
+                    className="p-4 border rounded-xl shadow-md bg-gray-50 hover:bg-gray-100 transition"
+                  >
+                    <h3 className="text-lg font-semibold">{entry.title}</h3>
+                    <p
+                      className="text-sm text-gray-700 mt-1"
+                      dangerouslySetInnerHTML={{
+                        __html: getPreviewHtml(entry.content, 200),
+                      }}
+                    />
+
+                    <p className="text-xs text-gray-500 mt-2">
+                      {formatDate(entry.createdAt)}
+                    </p>
+                    <div className="flex justify-end space-x-2 mt-4">
+                      <IconButton
+                        onClick={() => handleOpenModal(entry)}
+                        color="primary"
+                      >
+                        <Edit />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => handleDelete(entry._id)}
+                        color="error"
+                      >
+                        <Delete />
+                      </IconButton>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <table className="min-w-full border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border px-4 py-2 text-left">Title</th>
+                    <th className="border px-4 py-2 text-left">Content</th>
+                    <th className="border px-4 py-2 text-left">Created At </th>
+                    <th className="border px-4 py-2 text-left">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {journalEntries
+                    .slice(0, visibleJournalEntries)
+                    .map((entry) => (
+                      <tr
+                        key={entry._id}
+                        className="border-b transition-colors duration-200 hover:bg-gray-100"
+                      >
+                        <td className="border px-4 py-2">{entry.title}</td>
+                        <td
+                          className="border px-4 py-2"
+                          dangerouslySetInnerHTML={{
+                            __html: getPreviewHtml(entry.content, 100),
+                          }}
+                        />
+
+                        <td className="border px-4 py-2">
+                          {formatDate(entry.createdAt)}
+                        </td>
+                        <td className="border px-4 py-2 flex justify-center space-x-2">
+                          <IconButton
+                            onClick={() => handleEdit(entry._id)}
+                            color="primary"
+                          >
+                            <Edit />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => handleDelete(entry._id)}
+                            color="error"
+                          >
+                            <Delete />
+                          </IconButton>
+                        </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </table>
+            )}
+          </>
+        ) : (
+          <p className="text-gray-500">No journal entries available.</p>
+        )}
       </div>
-
-      {/* <ul className="mt-2">
-        {journalEntries.map((entry, index) => (
-          <li key={index} className="p-2 border-b">{entry}</li>
-        ))}
-      </ul> */}
-
       <Modal open={open} onClose={() => setOpen(false)}>
         <Box
           sx={{
@@ -333,7 +401,17 @@ const Diary = () => {
             width: { xs: "80%", md: "50%", lg: "40%" },
           }}
         >
-          <h2 className="text-2xl font-bold mb-4">Select an Image</h2>
+          <button
+            onClick={() => setOpen(false)}
+            className="absolute top-2 right-2 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-lg hover:bg-gray-300"
+          >
+            ✕
+          </button>
+
+          <h2 className="text-2xl font-bold mb-4 text-center">
+            Select an Image
+          </h2>
+
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {images.map((img, index) => (
               <img

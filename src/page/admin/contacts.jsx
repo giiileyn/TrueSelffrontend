@@ -83,8 +83,7 @@ const Contacts = () => {
     const workbook = new ExcelJS.Workbook();
     const worksheet = workbook.addWorksheet("Contacts");
 
-    // Load and add image
-    const headerImage = "/logo/tupLogo.png"; // Update this path
+    const headerImage = "/logo/tupLogo.png";
     const imageResponse = await fetch(headerImage);
     const imageBlob = await imageResponse.blob();
     const imageBuffer = await imageBlob.arrayBuffer();

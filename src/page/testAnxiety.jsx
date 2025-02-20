@@ -6,7 +6,8 @@ import AxiosAIInstance from "../../utils/AxiosAIInstance";
 import { getUser, getAge } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-const API_KEY = "sk_857c2037241508de1a5690663df2171009e2662d14e06844";
+
+const API_KEY = "sk_dabe98ee69c6a553fcc199c5d15da7f934d16aaaee201cc0";
 const VOICE_ID = "Xb7hH8MSUJpSbSDYk0k2";
 
 const jobOptions = [
@@ -35,100 +36,239 @@ const scale1to10Options = Array.from({ length: 10 }, (_, i) => ({
   label: (i + 1).toString(),
 }));
 
-const questions = [
-  {
-    key: "jobRole",
-    label: "1. What's your occupation?",
-    type: "select",
-    options: jobOptions,
+const translations = {
+  en: {
+    questions: [
+      {
+        key: "jobRole",
+        label: "1. What's your occupation?",
+        type: "select",
+        options: jobOptions,
+      },
+      {
+        key: "sleepDuration",
+        label: "2. How many hours do you sleep per day?",
+        type: "number",
+      },
+      {
+        key: "exerciseMinutes",
+        label: "3. How many minutes do you exercise per week?",
+        type: "number",
+      },
+      {
+        key: "caffeineIntake",
+        label: "4. What is your daily caffeine intake (milligram)?",
+        type: "number",
+      },
+      {
+        key: "alcoholIntake",
+        label: "5. How many alcoholic drinks do you consume per week?",
+        type: "number",
+      },
+      {
+        key: "heartRateAnxiety",
+        label:
+          "6. Typical heart rate during anxiety attack? (beats per minute)",
+        type: "number",
+      },
+      {
+        key: "breathingRate",
+        label:
+          "7. Breathing rate during anxiety attack? (Breaths per Minute - BPM)",
+        type: "number",
+      },
+      {
+        key: "sweatingSeverity",
+        label:
+          "8. On a scale of 1 to 5, how severe is sweating during an anxiety attack? (Subjective scale)",
+        type: "select",
+        options: scale1to5Options,
+      },
+      {
+        key: "therapySessions",
+        label: "9. Therapy sessions per month? (Sessions/Month)",
+        type: "number",
+      },
+      {
+        key: "smoking",
+        label: "10. Do you currently smoke? (Yes or No)",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "familyAnxiety",
+        label: "11. Family history of anxiety disorders? (Yes or No)",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "dizziness",
+        label: "12. Do you experience dizziness during anxiety attacks?",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "medication",
+        label: "13. Are you taking any medication for anxiety?",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "lifeEvents",
+        label: "14. Have you experienced any major life events recently?",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "dietQuality",
+        label:
+          "15. On a scale of 1 to 10, how would you rate your overall diet?",
+        type: "select",
+        options: scale1to10Options,
+      },
+      {
+        key: "stressLevel",
+        label:
+          "16. On a scale of 1 to 10, how would you rate your current stress level?",
+        type: "select",
+        options: scale1to10Options,
+      },
+    ],
+    title: "AI Anxiety Test",
+    next: "Next",
+    submit: "Submit",
+    manageMildAnxiety: "Manage Mild Anxiety",
+    anxietyLevel: "Your anxiety level is:",
+    techniques: "Try these techniques to manage mild anxiety:",
+    mindfulness: "Practice mindfulness (e.g., meditation, deep breathing)",
+    physicalActivity: "Engage in physical activity",
+    balancedDiet: "Maintain a balanced diet and get enough sleep",
+    limitCaffeine: "Limit caffeine and alcohol",
+    connectLovedOnes: "Connect with loved ones for support",
+    enjoyHobbies: "Enjoy hobbies to relax",
+    seekHelp: "If anxiety persists, consider seeking professional help.",
+    gotIt: "Got it!",
   },
-  {
-    key: "sleepDuration",
-    label: "2. How many hours do you sleep per day?",
-    type: "number",
+  tl: {
+    questions: [
+      {
+        key: "jobRole",
+        label: "1. Ano ang iyong trabaho?",
+        type: "select",
+        options: jobOptions,
+      },
+      {
+        key: "sleepDuration",
+        label: "2. Ilang oras ka natutulog bawat araw?",
+        type: "number",
+      },
+      {
+        key: "exerciseMinutes",
+        label: "3. Ilang minuto kang nag-eehersisyo bawat linggo?",
+        type: "number",
+      },
+      {
+        key: "caffeineIntake",
+        label:
+          "4. Gaano karaming caffeine ang iniinom mo bawat araw (milligram)?",
+        type: "number",
+      },
+      {
+        key: "alcoholIntake",
+        label: "5. Ilang inuming may alkohol ang iniinom mo bawat linggo?",
+        type: "number",
+      },
+      {
+        key: "heartRateAnxiety",
+        label:
+          "6. Karaniwang tibok ng puso sa panahon ng atake ng pagkabalisa? (beats per minute)",
+        type: "number",
+      },
+      {
+        key: "breathingRate",
+        label:
+          "7. Bilis ng paghinga sa panahon ng atake ng pagkabalisa? (Hinga bawat Minuto - BPM)",
+        type: "number",
+      },
+      {
+        key: "sweatingSeverity",
+        label:
+          "8. Sa isang sukat na 1 hanggang 5, gaano kalala ang pagpapawis sa panahon ng atake ng pagkabalisa? (Subjective scale)",
+        type: "select",
+        options: scale1to5Options,
+      },
+      {
+        key: "therapySessions",
+        label: "9. Mga sesyon ng therapy bawat buwan? (Sessions/Buwan)",
+        type: "number",
+      },
+      {
+        key: "smoking",
+        label: "10. Ikaw ba ay naninigarilyo? (Oo o Hindi)",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "familyAnxiety",
+        label:
+          "11. Mayroon bang kasaysayan ng pagkabalisa sa pamilya? (Oo o Hindi)",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "dizziness",
+        label:
+          "12. Nakakaranas ka ba ng pagkahilo sa panahon ng atake ng pagkabalisa?",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "medication",
+        label: "13. Umiinom ka ba ng anumang gamot para sa pagkabalisa?",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "lifeEvents",
+        label:
+          "14. Nakaranas ka ba ng anumang malalaking kaganapan sa buhay kamakailan?",
+        type: "select",
+        options: yesNoOptions,
+      },
+      {
+        key: "dietQuality",
+        label:
+          "15. Sa isang sukat na 1 hanggang 10, paano mo irarate ang iyong diyeta?",
+        type: "select",
+        options: scale1to10Options,
+      },
+      {
+        key: "stressLevel",
+        label:
+          "16. Sa isang sukat na 1 hanggang 10, paano mo irarate ang iyong kasalukuyang antas ng stress?",
+        type: "select",
+        options: scale1to10Options,
+      },
+    ],
+    title: "AI Anxiety Test",
+    next: "Susunod",
+    submit: "Ipasa",
+    manageMildAnxiety: "Pamahalaan ang Banayad na Pagkabalisa",
+    anxietyLevel: "Ang antas ng iyong pagkabalisa ay:",
+    techniques:
+      "Subukan ang mga teknik na ito upang pamahalaan ang banayad na pagkabalisa:",
+    mindfulness:
+      "Magsanay ng mindfulness (hal. pagmumuni-muni, malalim na paghinga)",
+    physicalActivity: "Mag-ehersisyo",
+    balancedDiet: "Panatilihin ang balanseng diyeta at sapat na tulog",
+    limitCaffeine: "Limitahan ang caffeine at alkohol",
+    connectLovedOnes: "Makipag-ugnayan sa mga mahal sa buhay para sa suporta",
+    enjoyHobbies: "Magsaya sa mga libangan upang mag-relax",
+    seekHelp:
+      "Kung magpatuloy ang pagkabalisa, isaalang-alang ang propesyonal na tulong.",
+    gotIt: "Nakuha ko na!",
   },
-  {
-    key: "exerciseMinutes",
-    label: "3. How many minutes do you exercise per week?",
-    type: "number",
-  },
-  {
-    key: "caffeineIntake",
-    label: "4. What is your daily caffeine intake (milligram)?",
-    type: "number",
-  },
-  {
-    key: "alcoholIntake",
-    label: "5. How many alcoholic drinks do you consume per week?",
-    type: "number",
-  },
-  {
-    key: "heartRateAnxiety",
-    label: "6. Typical heart rate during anxiety attack? (beats per minute)",
-    type: "number",
-  },
-  {
-    key: "breathingRate",
-    label:
-      "7. Breathing rate during anxiety attack? (Breaths per Minute - BPM)",
-    type: "number",
-  },
-  {
-    key: "sweatingSeverity",
-    label:
-      "8. On a scale of 1 to 5, how severe is sweating during an anxiety attack? (Subjective scale)",
-    type: "select",
-    options: scale1to5Options,
-  },
-  {
-    key: "therapySessions",
-    label: "9. Therapy sessions per month? (Sessions/Month)",
-    type: "number",
-  },
-  {
-    key: "smoking",
-    label: "10. Do you currently smoke? (Yes or No)",
-    type: "select",
-    options: yesNoOptions,
-  },
-  {
-    key: "familyAnxiety",
-    label: "11. Family history of anxiety disorders? (Yes or No)",
-    type: "select",
-    options: yesNoOptions,
-  },
-  {
-    key: "dizziness",
-    label: "12. Do you experience dizziness during anxiety attacks?",
-    type: "select",
-    options: yesNoOptions,
-  },
-  {
-    key: "medication",
-    label: "13. Are you taking any medication for anxiety?",
-    type: "select",
-    options: yesNoOptions,
-  },
-  {
-    key: "lifeEvents",
-    label: "14. Have you experienced any major life events recently?",
-    type: "select",
-    options: yesNoOptions,
-  },
-  {
-    key: "dietQuality",
-    label: "15. On a scale of 1 to 10, how would you rate your overall diet?",
-    type: "select",
-    options: scale1to10Options,
-  },
-  {
-    key: "stressLevel",
-    label:
-      "16. On a scale of 1 to 10, how would you rate your current stress level?",
-    type: "select",
-    options: scale1to10Options,
-  },
-];
+};
 
 const TestAnxiety = () => {
   const {
@@ -142,11 +282,14 @@ const TestAnxiety = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [audioPlayed, setAudioPlayed] = useState(false);
-  const currentQuestion = questions[currentQuestionIndex];
+  const [language, setLanguage] = useState("en");
+  const currentQuestion =
+    translations[language].questions[currentQuestionIndex];
   const [progress, setProgress] = useState(0);
   const user = getUser();
   const audioRef = useRef(null);
   const navigate = useNavigate();
+
   const speakQuestion = async (text) => {
     try {
       if (audioRef.current) {
@@ -192,9 +335,12 @@ const TestAnxiety = () => {
   useEffect(() => {
     if (currentQuestion) {
       speakQuestion(currentQuestion.label);
-      setProgress(((currentQuestionIndex + 1) / questions.length) * 100);
+      setProgress(
+        ((currentQuestionIndex + 1) / translations[language].questions.length) *
+          100
+      );
     }
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, language]);
 
   const handleNext = (data) => {
     setAnswers({
@@ -203,7 +349,7 @@ const TestAnxiety = () => {
     });
     setValue(currentQuestion.key, "");
 
-    if (currentQuestionIndex < questions.length - 1) {
+    if (currentQuestionIndex < translations[language].questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
     } else {
       console.log(answers);
@@ -263,26 +409,27 @@ const TestAnxiety = () => {
         navigate("/recommend");
       } else {
         Swal.fire({
-          title: "Manage Mild Anxiety",
+          title: translations[language].manageMildAnxiety,
           html: `
-            <p>Your anxiety level is: <strong>${severity}</strong></p>
-            <p style="margin-bottom: 15px" >Try these techniques to manage mild anxiety:</p>
+            <p>${translations[language].anxietyLevel} <strong>${severity}</strong></p>
+            <p style="margin-bottom: 15px" >${translations[language].techniques}</p>
             <ul style="text-align: left;">
-              <li>- Practice mindfulness (e.g., meditation, deep breathing)</li>
-              <li>- Engage in physical activity</li>
-              <li>- Maintain a balanced diet and get enough sleep</li>
-              <li>- Limit caffeine and alcohol</li>
-              <li>- Connect with loved ones for support</li>
-              <li>- Enjoy hobbies to relax</li>
+              <li>- ${translations[language].mindfulness}</li>
+              <li>- ${translations[language].physicalActivity}</li>
+              <li>- ${translations[language].balancedDiet}</li>
+              <li>- ${translations[language].limitCaffeine}</li>
+              <li>- ${translations[language].connectLovedOnes}</li>
+              <li>- ${translations[language].enjoyHobbies}</li>
             </ul>
-            <p>If anxiety persists, consider seeking professional help.</p>
+            <p>${translations[language].seekHelp}</p>
           `,
           icon: "info",
-          confirmButtonText: "Got it!",
+          confirmButtonText: translations[language].gotIt,
         });
       }
     });
   };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-100 to-white p-6">
       <form
@@ -294,9 +441,25 @@ const TestAnxiety = () => {
           value={progress}
           max="100"
         ></progress>
+
+        {/* Language Selection */}
+        <div className="mb-4">
+          <label className="text-lg font-semibold text-gray-700 mb-2">
+            Language / Wika
+          </label>
+          <Select
+            options={[
+              { value: "en", label: "English" },
+              { value: "tl", label: "Tagalog" },
+            ]}
+            onChange={(selected) => setLanguage(selected.value)}
+            defaultValue={{ value: "en", label: "English" }}
+          />
+        </div>
+
         {/* Title */}
         <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-          AI Anxiety Test
+          {translations[language].title}
         </h2>
 
         {/* Question Field */}
@@ -350,7 +513,9 @@ const TestAnxiety = () => {
           type="submit"
           className="w-full bg-purple-600 text-white py-3 rounded-lg mt-6 text-lg font-semibold hover:bg-purple-700 transition-all duration-200"
         >
-          {currentQuestionIndex === questions.length - 1 ? "Submit" : "Next"}
+          {currentQuestionIndex === translations[language].questions.length - 1
+            ? translations[language].submit
+            : translations[language].next}
         </button>
       </form>
     </div>

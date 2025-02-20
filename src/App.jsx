@@ -19,7 +19,7 @@ import Recommend from "./page/recommend";
 import CrisisSupport from "./page/CrisisSupport";
 import TermsOfService from "./page/termsOfService";
 import PrivacyPolicy from "./page/privacyPolicy";
-
+import Authors from "./page/Authors";
 import Siri from "./page/siri";
 import DiaryEditor from "./page/Diary";
 import UserLayout from "./components/user/Layout";
@@ -46,6 +46,7 @@ const App = () => {
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/author" element={<Authors />} />
           <Route path="/about" element={<Aboutus />} />
           <Route path="/community" element={<ComPage />} />
           <Route
